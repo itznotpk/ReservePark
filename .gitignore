@@ -1,0 +1,17 @@
+# Scratch / extracted files
+tmp/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+*.swp
+
+# Build / simulation outputs
+build/
+*.vcd
+*.fst
+*.log
+node_modules/
+__pycache__/
