@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<defs><marker id="a1F2A44" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1F2A44"/></marker><marker id="s1F2A44" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#1F2A44"/></marker><marker id="a0F8B8D" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0F8B8D"/></marker><marker id="s0F8B8D" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#0F8B8D"/></marker><marker id="aE8590C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#E8590C"/></marker><marker id="sE8590C" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#E8590C"/></marker></defs>
+<rect width="1920" height="1080" fill="#FFFFFF"/>
+<rect x="300" y="140" width="1320" height="760" rx="18" fill="#FBFCFE" stroke="#1F2A44" stroke-width="3"/>
+<text x="760" y="178" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#1F2A44" text-anchor="middle">RESERVEPARK SoC</text>
+<rect x="318" y="200" width="168" height="110" rx="10" fill="#DCE8FB" stroke="#2F6FDE" stroke-width="2.5"/>
+<text x="402" y="234" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">RISC-V CPU</text>
+<text x="402" y="262" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">PicoRV32 · RV32I</text>
+<text x="402" y="282" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">runs policy firmware</text>
+<path d="M402,312 V350" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="504" y="200" width="168" height="110" rx="10" fill="#DCE8FB" stroke="#2F6FDE" stroke-width="2.5"/>
+<text x="588" y="234" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">Program/data RAM</text>
+<text x="588" y="262" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">64 KiB SRAM</text>
+<text x="588" y="282" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">firmware + records</text>
+<path d="M588,312 V350" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="690" y="200" width="168" height="110" rx="10" fill="#E0F2E8" stroke="#22915A" stroke-width="2.5"/>
+<text x="774" y="234" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">Register file + IRQ</text>
+<text x="774" y="262" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">R0–R17 + extensions</text>
+<text x="774" y="282" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">sticky faults, RW1C</text>
+<path d="M774,312 V350" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="876" y="200" width="168" height="110" rx="10" fill="#E0F2E8" stroke="#22915A" stroke-width="2.5"/>
+<text x="960" y="234" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">RTC + deadlines</text>
+<text x="960" y="262" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">logical seconds</text>
+<text x="960" y="282" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">15 / 45-min checks</text>
+<path d="M960,312 V350" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="1062" y="200" width="168" height="110" rx="10" fill="#E0F2E8" stroke="#22915A" stroke-width="2.5"/>
+<text x="1146" y="234" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">Debug trace + DFx</text>
+<text x="1146" y="262" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">event trace buffer</text>
+<text x="1146" y="282" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">maint. test injection</text>
+<path d="M1146,312 V350" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="1248" y="200" width="168" height="110" rx="10" fill="#E0F2E8" stroke="#22915A" stroke-width="2.5"/>
+<text x="1332" y="234" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">NVM journal</text>
+<text x="1332" y="262" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">bookings, timestamps</text>
+<text x="1332" y="282" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">fee IDs, audit log</text>
+<path d="M1332,312 V350" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="1434" y="200" width="168" height="110" rx="10" fill="#E0F2E8" stroke="#22915A" stroke-width="2.5"/>
+<text x="1518" y="234" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">Network / payment</text>
+<text x="1518" y="262" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">RX / TX mailboxes</text>
+<text x="1518" y="282" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">booking, fee, notify</text>
+<path d="M1518,312 V350" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="318" y="450" width="168" height="110" rx="10" fill="#F0E8FB" stroke="#7B4FC9" stroke-width="2.5" stroke-dasharray="7 5"/>
+<text x="402" y="484" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">ACPR interface*</text>
+<text x="402" y="512" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">plate token + valid</text>
+<text x="402" y="532" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">black-box IP</text>
+<path d="M402,402 V448" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="504" y="450" width="168" height="110" rx="10" fill="#E0F2E8" stroke="#22915A" stroke-width="2.5"/>
+<text x="588" y="484" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">Input qualifier</text>
+<text x="588" y="512" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">2-stage sync +</text>
+<text x="588" y="532" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">debounce filter</text>
+<path d="M588,402 V448" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="690" y="450" width="168" height="110" rx="10" fill="#E0F2E8" stroke="#22915A" stroke-width="2.5"/>
+<text x="774" y="484" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">Bay counters</text>
+<text x="774" y="512" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">PHYS_OCC · INSIDE</text>
+<text x="774" y="532" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">BOOKABLE · BACKUP</text>
+<path d="M774,402 V448" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="876" y="450" width="168" height="110" rx="10" fill="#E0F2E8" stroke="#22915A" stroke-width="2.5"/>
+<text x="960" y="484" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">Bay allocator</text>
+<text x="960" y="512" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">atomic ownership +</text>
+<text x="960" y="532" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">protected backup pool</text>
+<path d="M960,402 V448" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="1062" y="450" width="168" height="110" rx="10" fill="#E0F2E8" stroke="#22915A" stroke-width="2.5"/>
+<text x="1146" y="484" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">Entry gate FSM</text>
+<text x="1146" y="512" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">passage + timestamp</text>
+<text x="1146" y="532" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">obstruction interlock</text>
+<path d="M1146,402 V448" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="1248" y="450" width="168" height="110" rx="10" fill="#E0F2E8" stroke="#22915A" stroke-width="2.5"/>
+<text x="1332" y="484" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">Exit gate FSM</text>
+<text x="1332" y="512" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">passage + timestamp</text>
+<text x="1332" y="532" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">obstruction interlock</text>
+<path d="M1332,402 V448" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="1434" y="450" width="168" height="110" rx="10" fill="#F0E8FB" stroke="#7B4FC9" stroke-width="2.5" stroke-dasharray="7 5"/>
+<text x="1518" y="484" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15.5" font-weight="700" fill="#1B2333" text-anchor="middle">Motor + display*</text>
+<text x="1518" y="512" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">barrier drivers,</text>
+<text x="1518" y="532" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">kiosk + alarm</text>
+<path d="M1518,402 V448" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="318" y="352" width="1284" height="48" rx="8" fill="#1F2A44" stroke="#1F2A44" stroke-width="1"/>
+<text x="960" y="372" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">INTERNAL INTERCONNECT · PicoRV32 native memory bus + address decoder</text>
+<text x="960" y="391" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12" font-weight="400" fill="#C9D3E6" text-anchor="middle">RAM 0x0000_0000  ·  MMIO registers 0x1000_0000  ·  Journal 0x2000_0000</text>
+<rect x="318" y="30" width="168" height="70" rx="10" fill="#F1F3F6" stroke="#7D8799" stroke-width="2"/>
+<text x="402" y="60" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1B2333" text-anchor="middle">clk · rst_n</text>
+<text x="402" y="82" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">global clock + reset</text>
+<path d="M402,100 V138" fill="none" stroke="#1F2A44" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="412" y="126" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="11.5" font-weight="400" fill="#4A5568" text-anchor="start" font-style="italic">to all blocks</text>
+<rect x="1062" y="30" width="168" height="70" rx="10" fill="#F1F3F6" stroke="#7D8799" stroke-width="2"/>
+<text x="1146" y="60" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1B2333" text-anchor="middle">JTAG / debug port</text>
+<text x="1146" y="82" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">trace + fault readout</text>
+<path d="M1146,102 V198" fill="none" stroke="#1F2A44" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="1248" y="30" width="168" height="70" rx="10" fill="#F1F3F6" stroke="#7D8799" stroke-width="2"/>
+<text x="1332" y="60" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1B2333" text-anchor="middle">NVM storage</text>
+<text x="1332" y="82" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">external flash</text>
+<path d="M1332,102 V198" fill="none" stroke="#1F2A44" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="1434" y="30" width="466" height="70" rx="10" fill="#F1F3F6" stroke="#7D8799" stroke-width="2"/>
+<text x="1667" y="60" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1B2333" text-anchor="middle">Mobile app + cloud booking / payment service</text>
+<text x="1667" y="82" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">external · via LAN / Wi-Fi gateway</text>
+<path d="M1518,102 V198" fill="none" stroke="#1F2A44" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<rect x="20" y="455" width="240" height="100" rx="10" fill="#F1F3F6" stroke="#7D8799" stroke-width="2"/>
+<text x="140" y="495" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1B2333" text-anchor="middle">Entry + exit cameras</text>
+<text x="140" y="518" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">frames to ACPR (black box)</text>
+<path d="M262,505 H316" fill="none" stroke="#1F2A44" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<rect x="20" y="600" width="240" height="280" rx="10" fill="#F1F3F6" stroke="#7D8799" stroke-width="2"/>
+<text x="140" y="632" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1B2333" text-anchor="middle">Lane + bay sensors</text>
+<text x="40" y="664" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• entry / exit presence</text>
+<text x="40" y="698" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• beams A/B (each lane)</text>
+<text x="40" y="732" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• bay occupancy [0:3]</text>
+<text x="40" y="766" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• barrier limit switches</text>
+<text x="40" y="800" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• lane obstruction (×2)</text>
+<text x="40" y="834" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• assistance button</text>
+<path d="M262,760 H560 V562" fill="none" stroke="#1F2A44" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="410" y="750" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12" font-weight="400" fill="#4A5568" text-anchor="middle" font-style="italic">raw sensor inputs</text>
+<rect x="1660" y="440" width="240" height="60" rx="10" fill="#F1F3F6" stroke="#7D8799" stroke-width="2"/>
+<text x="1780" y="466" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1B2333" text-anchor="middle">Barrier motors</text>
+<text x="1780" y="486" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12" font-weight="400" fill="#4A5568" text-anchor="middle">entry / exit open, close</text>
+<rect x="1660" y="530" width="240" height="60" rx="10" fill="#F1F3F6" stroke="#7D8799" stroke-width="2"/>
+<text x="1780" y="556" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1B2333" text-anchor="middle">Kiosk displays</text>
+<text x="1780" y="576" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12" font-weight="400" fill="#4A5568" text-anchor="middle">bay, status, errors</text>
+<rect x="1660" y="620" width="240" height="60" rx="10" fill="#F1F3F6" stroke="#7D8799" stroke-width="2"/>
+<text x="1780" y="646" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14.5" font-weight="700" fill="#1B2333" text-anchor="middle">Alarm + status LED</text>
+<text x="1780" y="666" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12" font-weight="400" fill="#4A5568" text-anchor="middle">fault / emergency</text>
+<path d="M1602,470 H1658" fill="none" stroke="#1F2A44" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<path d="M1602,515 H1640 V560 H1658" fill="none" stroke="#1F2A44" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<path d="M1602,545 H1612 V650 H1658" fill="none" stroke="#1F2A44" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<path d="M616,560 V610 H1304 V562" fill="none" stroke="#0F8B8D" stroke-width="2.5" stroke-linejoin="round" stroke-dasharray="8 5" marker-end="url(#a0F8B8D)"/>
+<circle cx="774" cy="610" r="5" fill="#0F8B8D"/>
+<path d="M774,610 V562" fill="none" stroke="#0F8B8D" stroke-width="2.5" stroke-linejoin="round" stroke-dasharray="8 5" marker-end="url(#a0F8B8D)"/>
+<circle cx="960" cy="610" r="5" fill="#0F8B8D"/>
+<path d="M960,610 V562" fill="none" stroke="#0F8B8D" stroke-width="2.5" stroke-linejoin="round" stroke-dasharray="8 5" marker-end="url(#a0F8B8D)"/>
+<circle cx="1118" cy="610" r="5" fill="#0F8B8D"/>
+<path d="M1118,610 V562" fill="none" stroke="#0F8B8D" stroke-width="2.5" stroke-linejoin="round" stroke-dasharray="8 5" marker-end="url(#a0F8B8D)"/>
+<text x="632" y="632" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="600" fill="#0F8B8D" text-anchor="start">qualified sensor + limit signals (direct wires, not via the bus)</text>
+<path d="M1174,560 V602 A8,8 0 0,1 1174,618 V650 H1518 V562" fill="none" stroke="#E8590C" stroke-width="3" stroke-linejoin="round" marker-end="url(#aE8590C)"/>
+<path d="M1360,560 V650" fill="none" stroke="#E8590C" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="1360" cy="650" r="5" fill="#E8590C"/>
+<text x="1190" y="674" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="700" fill="#E8590C" text-anchor="start">interlocked motor requests</text>
+<text x="1190" y="691" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12" font-weight="400" fill="#E8590C" text-anchor="start">hardware path, independent of firmware</text>
+<rect x="640" y="728" width="960" height="150" rx="10" fill="#FFFFFF" stroke="#C5CEDD" stroke-width="1.5"/>
+<text x="660" y="756" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#1F2A44" text-anchor="start">Who decides what</text>
+<text x="660" y="784" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#2F6FDE" text-anchor="start">Firmware on the CPU:</text>
+<text x="810" y="784" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">booking checks, bay candidate choice, 15/45-minute deadlines, backup recovery, billing IDs</text>
+<text x="660" y="812" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#22915A" text-anchor="start">Custom RTL:</text>
+<text x="810" y="812" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">timestamped event capture, atomic bay commit, beam passage decoding, obstruction interlock</text>
+<text x="660" y="840" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#7B4FC9" text-anchor="start">Black box*:</text>
+<text x="810" y="840" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">ACPR, barrier motor and display drivers (allowed as black boxes by the challenge)</text>
+<text x="660" y="864" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12" font-weight="400" fill="#4A5568" text-anchor="start" font-style="italic">Firmware requests moves; only RTL drives the motor, so a software bug cannot close a barrier on a car.</text>
+<rect x="300" y="940" width="34" height="22" rx="5" fill="#DCE8FB" stroke="#2F6FDE" stroke-width="2"/>
+<text x="346" y="956" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Processor subsystem</text>
+<rect x="550" y="940" width="34" height="22" rx="5" fill="#E0F2E8" stroke="#22915A" stroke-width="2"/>
+<text x="596" y="956" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Custom RTL peripheral</text>
+<rect x="800" y="940" width="34" height="22" rx="5" fill="#F0E8FB" stroke="#7B4FC9" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="846" y="956" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Black-box IP*</text>
+<rect x="1050" y="940" width="34" height="22" rx="5" fill="#F1F3F6" stroke="#7D8799" stroke-width="2"/>
+<text x="1096" y="956" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Outside the SoC</text>
+<path d="M300,1001 H346" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)" marker-start="url(#s1F2A44)"/>
+<text x="358" y="1006" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Bus read / write (memory-mapped)</text>
+<path d="M630,1001 H676" fill="none" stroke="#0F8B8D" stroke-width="2.5" stroke-linejoin="round" stroke-dasharray="8 5" marker-end="url(#a0F8B8D)"/>
+<text x="688" y="1006" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Qualified sensor wires</text>
+<path d="M900,1001 H946" fill="none" stroke="#E8590C" stroke-width="3" stroke-linejoin="round" marker-end="url(#aE8590C)"/>
+<text x="958" y="1006" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Interlocked motor path</text>
+<path d="M1170,1001 H1216" fill="none" stroke="#1F2A44" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="1228" y="1006" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">External signal (arrow shows direction)</text>
+</svg>

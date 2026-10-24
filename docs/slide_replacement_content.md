@@ -10,7 +10,11 @@ Each section gives: the slide it replaces, why, and the exact content to paste.
 
 ## 1. Exit FSM — preview pages 12, 13, 32 (15 marks)
 
-The full corrected diagram and state table live in `docs/PRD.md` section 8.1, "Corrected exit FSM for challenge 4.5". Paste that Mermaid diagram and table directly, or redraw it as boxes and arrows using the same states and guards. Do not keep the old EXIT_COMMIT-after-close ordering or the FAULT-on-obstruction-during-close transition.
+Ready-to-insert image: `docs/diagrams/exit_fsm_4_5.png` (3840×2160) or `exit_fsm_4_5.svg` (editable in PowerPoint via Insert > Pictures, then right-click > Convert to Shape).
+
+![Corrected exit FSM](diagrams/exit_fsm_4_5.png)
+
+The state table for the 4.5(b) slide lives in `docs/PRD.md` section 8.1, "Corrected exit FSM for challenge 4.5". Do not keep the old EXIT_COMMIT-after-close ordering or the FAULT-on-obstruction-during-close transition.
 
 Five differences from the preview slides to say out loud in the talk:
 
@@ -28,7 +32,11 @@ Title: `4.1 | Proposed top-level SoC block diagram`
 Subtitle: `External app/payment are outside chip; every internal block sits on the on-chip interconnect`
 Kicker: `RESERVEPARK SoC | INTEL UNIVERSITY VLSI BOOTCAMP 2026 4.1 BLOCK DIAGRAM`
 
-This is a drawing fix, not a text swap. Redraw the box-and-line diagram using this block list, with a drawn line from every block to the bus:
+Ready-to-insert image: `docs/diagrams/block_diagram_4_1.png` (3840×2160) or `block_diagram_4_1.svg` (editable in PowerPoint).
+
+![Corrected SoC block diagram](diagrams/block_diagram_4_1.png)
+
+The block list the diagram is drawn from, for speaker notes:
 
 ```
 OUTSIDE THE CHIP
@@ -199,11 +207,15 @@ R3   Random resets, booking ages, network  Exactly-once events; no unjust fee; l
 Mapping back to the PRD's D00-D29 catalogue (`docs/PRD.md` section 10):
 
 ```
-Slide D1 -> PRD D21        Slide D5 -> PRD D05
-Slide D2 -> PRD D12        Slide D6 -> PRD D06
-Slide D3 -> PRD D01, D02   Slide D7 -> PRD D22, D28
-Slide D4 -> PRD D03        Slide D8 -> PRD D27 (Tier C)
+Slide D00 -> PRD D00         Slide D06 -> PRD D06
+Slide D01 -> PRD D21         Slide D07 -> PRD D07
+Slide D02 -> PRD D12         Slide D08 -> PRD D08
+Slide D03 -> PRD D01, D02    Slide D09 -> PRD D22, D28
+Slide D04 -> PRD D03         Slide D10 -> PRD D27 (Tier C)
+Slide D05 -> PRD D05
 ```
+
+The table above renumbers the deck's original D1-D8. PRD section 15.2 maps the original numbering, so use this mapping once the slide is replaced.
 
 What changed and why: D07 normal exit and D08 obstruction added since the corrected FSM now has an explicit interlock path to demonstrate; D00 reset check added; D08's expected result no longer sends obstruction to FAULT; Status and Run ID columns added so the slide can show PASS/PLANNED honestly on presentation day, not a fabricated all-pass table.
 
