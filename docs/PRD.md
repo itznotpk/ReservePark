@@ -207,18 +207,32 @@ Do not require PHYS_OCC == INSIDE_COUNT during transit or under deliberately inj
 
 ## 8. State-machine design and explanation
 
+Three state machines, aligned by name. The overall booking FSM below runs once per booking in firmware. The entry lane FSM (section 8.2) and exit lane FSM (section 8.1) run once per vehicle at each gate. Only five lane states move a booking: ENTRY_VALIDATE, ENTRY_RECORD, EXIT_VALIDATE, EXIT_RECORD and EXIT_FINALIZE. Slide images: `docs/diagrams/overall_fsm.png`, `entry_fsm.png`, `exit_fsm_4_5.png`.
+
 ```mermaid
 stateDiagram-v2
-  [*] --> HELD: booking committed
-  HELD --> NO_SHOW: deadline reached without verified arrival
-  HELD --> ARRIVAL_PENDING: matching arrival captured before cutoff
-  ARRIVAL_PENDING --> MANUAL_REVIEW: no backup or unrecoverable admission fault
-  ARRIVAL_PENDING --> ENTERED_NOT_PARKED: authorised entry passage
+  [*] --> REQUEST
+  REQUEST --> REJECTED: authorisation or commit fails
+  REQUEST --> HELD: local atomic commit sets T0
+  HELD --> NO_SHOW: age >= 2700 s without verified arrival
+  HELD --> ARRIVAL_PENDING: ENTRY_VALIDATE, plate matched before cutoff
+  ARRIVAL_PENDING --> ARRIVAL_PENDING: ENTRY_REASSIGN, bay swapped to backup
+  ARRIVAL_PENDING --> MANUAL_REVIEW: ENTRY_ASSIST or ENTRY_FAULT after check-in
+  ARRIVAL_PENDING --> ENTERED_NOT_PARKED: ENTRY_RECORD, entry crossing
   ENTERED_NOT_PARKED --> PARKED: assigned bay occupied
-  PARKED --> EXIT_PENDING: exit authorised
-  EXIT_PENDING --> EXITED_RECONCILE: exit passage captured once
-  EXITED_RECONCILE --> CLOSED: release conditions satisfied
+  PARKED --> EXIT_PENDING: EXIT_VALIDATE, session matched
+  EXIT_PENDING --> PARKED: EXIT_ASSIST, aborted passage
+  EXIT_PENDING --> EXITED_RECONCILE: EXIT_RECORD, exit crossing
+  EXITED_RECONCILE --> EXITED_RECONCILE: bay still occupied, discrepancy flagged
+  EXITED_RECONCILE --> CLOSED: EXIT_FINALIZE, owner matches and bay vacant
 ```
+
+| Booking state | Lane states running during it |
+| --- | --- |
+| ARRIVAL_PENDING | ENTRY_PREFLIGHT, ENTRY_REASSIGN, ENTRY_OPEN, ENTRY_WAIT_PASS |
+| ENTERED_NOT_PARKED | ENTRY_WAIT_CLEAR, ENTRY_CLOSE, ENTRY_DONE, then driving to the bay |
+| EXIT_PENDING | EXIT_OPEN, EXIT_WAIT_PASS |
+| EXITED_RECONCILE | EXIT_WAIT_CLEAR, EXIT_CLOSE, EXIT_FINALIZE, EXIT_DONE |
 
 This is a policy diagram, not evidence of executed transitions. Unexpected movement, timeouts and faults must have explicit handlers; the diagram shows only principal transitions.
 
@@ -278,6 +292,30 @@ Differences from the preview slides, to state in the talk:
 3. Obstruction during closing stops and reopens the barrier. Only a timeout is a fault.
 4. EXIT_DONE queues the cloud notification instead of waiting for it.
 5. The beam check is the full four-step overlap sequence, not "A then B".
+
+The exit FSM uses the same column grid as the entry FSM in section 8.2. Column 3 is empty on exit because a leaving car needs no bay check.
+
+### 8.2 Entry FSM
+
+Optional extra slide; the challenge provides an entry FSM template and requires only the exit FSM. This version extends the template for a reservation-only car park and mirrors the exit FSM state for state.
+
+| State | Action | Guard and next state |
+| --- | --- | --- |
+| ENTRY_IDLE | Barrier closed; wait for a vehicle at the entrance | entry_presence=1 -> ENTRY_WAIT_ACPR |
+| ENTRY_WAIT_ACPR | Trigger plate recognition | acpr_valid -> ENTRY_VALIDATE; acpr_error or timeout -> ENTRY_ASSIST |
+| ENTRY_VALIDATE | Firmware matches the plate token to a HELD booking captured before the cutoff. Sets ARRIVAL_PENDING and stops the no-show timer | match -> ENTRY_PREFLIGHT; no valid booking or past cutoff -> ENTRY_ASSIST, barrier stays closed |
+| ENTRY_PREFLIGHT | Check the assigned bay is still vacant and healthy | ok -> ENTRY_OPEN; occupied, faulty or unknown -> ENTRY_REASSIGN |
+| ENTRY_REASSIGN | Firmware picks the lowest free healthy backup; allocator RTL commits the swap atomically before any open request | committed -> ENTRY_OPEN; no backup free -> ENTRY_ASSIST |
+| ENTRY_OPEN | Request open; wait for limit feedback | entry_opened -> ENTRY_WAIT_PASS; open timeout -> ENTRY_FAULT |
+| ENTRY_WAIT_PASS | Decode beams for `00 -> 10 -> 11 -> 01 -> 00` | complete sequence -> ENTRY_RECORD; reverse, partial or timeout -> ENTRY_ASSIST with no movement counted |
+| ENTRY_RECORD | RTL captures the entry timestamp at the crossing. INSIDE_COUNT increments once. Booking moves to ENTERED_NOT_PARKED | event captured -> ENTRY_WAIT_CLEAR |
+| ENTRY_WAIT_CLEAR | Hold open while the lane is obstructed | lane_clear -> ENTRY_CLOSE; obstruction timeout -> ENTRY_FAULT with barrier left open |
+| ENTRY_CLOSE | Request close. Hardware interlock blocks close under qualified obstruction | entry_closed -> ENTRY_DONE; obstruction -> stop, reopen, ENTRY_WAIT_CLEAR; close timeout -> ENTRY_FAULT |
+| ENTRY_DONE | Show the assigned bay on the kiosk; queue app notification | -> ENTRY_IDLE |
+| ENTRY_ASSIST | Unreadable plate, no valid booking, no backup or aborted passage. Kiosk instruction and operator call. A verified arrival goes to MANUAL_REVIEW, never NO_SHOW | operator clear -> ENTRY_IDLE |
+| ENTRY_FAULT | Motor or obstruction timeout. Raise the R9 cause and alarm. A recorded entry is never undone | operator clear -> ENTRY_IDLE |
+
+Mapping to the challenge template: ENTRY_CHECK_SPACE becomes ENTRY_PREFLIGHT, because every arriving car already owns a bay. ENTRY_STORE_INFO splits into check-in at ENTRY_VALIDATE and entry time at ENTRY_RECORD. ENTRY_WAIT_LANE_CLEAR splits into ENTRY_WAIT_PASS and ENTRY_WAIT_CLEAR. The template's "decrement one available space" at close already happened at booking commit, so ENTRY_CLOSE only closes. Preview page 14's BAY_PREFLIGHT and REASSIGN_LOCK are renamed ENTRY_PREFLIGHT and ENTRY_REASSIGN.
 
 ## 9. Testbench design
 
@@ -525,6 +563,7 @@ Page numbers refer to `ReservePark_Flexible_Parking_Duration_Preview.pdf`. Apply
 | 27 | R12 RTC_SECONDS is RO with no way to set it | Add a time-sync path; policy runs only when R1.TIME_VALID=1 |
 | 29 | R15 AUTO_ASSIGN "choose available normal bay" | Firmware selects the candidate; hardware revalidates and commits atomically or rejects |
 | 20-30 | Reset values written as 0, 1, 15 | Use the challenge template style, for example 1'b0 and 8'd15 |
+| 14 | Entry logic as a table with BAY_PREFLIGHT and REASSIGN_LOCK | Replace with the section 8.2 entry FSM (ENTRY_PREFLIGHT, ENTRY_REASSIGN) and add the overall booking FSM from section 8 |
 | 12, 13, 32 | EXIT_COMMIT after close; obstruction while closing goes to FAULT; "exit_A then exit_B"; EXIT_DONE waits for cloud | Replace with the section 8.1 FSM |
 | 16 | No obstruction, boundary or normal-exit test; D8 needs journal recovery; no result column | Add obstruction (D08), 899/900/901 and 2699/2700/2701 boundaries (D10), normal exit (D07) and a reset-initialisation check (D00). Mark slide D8 PLANNED unless Tier C passes. Add Status and Run ID columns |
 | 17 | Scan, compression and MBIST listed alongside demonstrated hooks | Split into "proposed silicon DFx" and "demonstrated in simulation" (trace buffer, sticky faults, raw versus qualified sensor view). Name the register bits used as hooks |

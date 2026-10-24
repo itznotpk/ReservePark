@@ -4,7 +4,10 @@
 | --- | --- | --- |
 | `block_diagram_4_1.png` / `.svg` | 4.1 Block diagram | SoC blocks, bus links, external I/O, direct sensor and interlock wires |
 | `exit_fsm_4_5.png` / `.svg` | 4.5 Exit FSM | Corrected exit FSM from PRD section 8.1, with new and renamed states marked |
-| `overall_fsm.png` / `.svg` | Extra slide or appendix | Whole-system booking FSM: request, timer, no-show, entry with backup recovery, parked, exit, billing and release |
+| `entry_fsm.png` / `.svg` | Extra slide (entry) | Entry FSM extending the challenge template; same grid as the exit FSM (PRD section 8.2) |
+| `overall_fsm.png` / `.svg` | Extra slide before 4.5 | Booking FSM from request to close; arrows labelled with the lane state that causes each move (PRD section 8) |
+
+The three FSMs are aligned: lane states use ENTRY_ / EXIT_ prefixes, both lane FSMs share one column grid, and the overall FSM uses only booking states. FSM canvases are 2400×1350, rendered at `--force-device-scale-factor=1.6 --window-size=2400,1350`.
 
 PNGs are 3840×2160 (16:9), sized for a full-width slide. SVGs stay sharp at any size and can be converted to editable shapes in PowerPoint (Insert > Pictures, then right-click > Convert to Shape).
 

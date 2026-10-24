@@ -16,13 +16,21 @@ Ready-to-insert image: `docs/diagrams/exit_fsm_4_5.png` (3840×2160) or `exit_fs
 
 The state table for the 4.5(b) slide lives in `docs/PRD.md` section 8.1, "Corrected exit FSM for challenge 4.5".
 
-### Overall system FSM (extra slide, before or after 4.5)
+### The three aligned FSMs (recommended slide order)
 
-The exit FSM covers only the exit lane. This whole-system FSM follows one booking from request to close and shows where the entry and exit lane FSMs run inside it. It carries the innovation story: the no-show timer, the backup swap and the no-deadline stay.
+1. **Overall booking FSM** (`diagrams/overall_fsm.png`). One booking from request to close. Every arrow is labelled with the lane state that causes it.
+2. **Entry FSM** (`diagrams/entry_fsm.png`). Optional extra slide. Extends the challenge's entry template; replaces the entry table on preview page 14. State table in PRD section 8.2.
+3. **Exit FSM** (`diagrams/exit_fsm_4_5.png`). The required 4.5 answer. State table in PRD section 8.1.
+
+The entry and exit FSMs share one grid: IDLE, WAIT_ACPR, VALIDATE, OPEN, WAIT_PASS, RECORD, WAIT_CLEAR and CLOSE sit in the same column on both. Column 3 holds ENTRY_PREFLIGHT on entry and is empty on exit.
 
 ![Overall booking FSM](diagrams/overall_fsm.png)
 
-Talk track: "Every booking runs this machine on the RISC-V core. The timer only runs in HELD, a verified arrival stops it, and the bay is swapped atomically before the barrier opens. EXIT_PENDING is the exit lane FSM on the next slide." Do not keep the old EXIT_COMMIT-after-close ordering or the FAULT-on-obstruction-during-close transition.
+![Entry FSM](diagrams/entry_fsm.png)
+
+Talk track: "Every booking runs the overall machine on the RISC-V core. Only five lane events move it: validate and record at entry, validate, record and finalize at exit. The timer runs only in HELD, so a verified driver is never charged a no-show fee, and the bay is swapped atomically in ENTRY_REASSIGN before the barrier opens. The two lane FSMs are mirror images; entry adds the bay check, exit adds finalize."
+
+Rename on preview page 14: BAY_PREFLIGHT becomes ENTRY_PREFLIGHT and REASSIGN_LOCK becomes ENTRY_REASSIGN, so every slide uses the same names. Do not keep the old EXIT_COMMIT-after-close ordering or the FAULT-on-obstruction-during-close transition.
 
 Five differences from the preview slides to say out loud in the talk:
 
