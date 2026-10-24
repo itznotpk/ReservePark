@@ -15,3 +15,9 @@ build/
 *.log
 node_modules/
 __pycache__/
+
+# Keep curated evidence (PRD section 14): logs and small traces under results/ and presentation_assets/
+!results/**/*.log
+!results/**/*.vcd
+!results/**/*.fst
+!presentation_assets/**

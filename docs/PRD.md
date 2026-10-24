@@ -1,8 +1,28 @@
 # RESERVEPARK: RISC-V SoC proof-of-concept and evidence PRD
 
-Version: 1.0 | Date: 24 October 2026 (Malaysia) | Policy baseline: ReservePark v2.0 Flexible Parking Duration
+Version: 1.1 | Date: 24 October 2026 (Malaysia) | Policy baseline: ReservePark v2.0 Flexible Parking Duration
 
 Status: proposed implementation and showcase specification. This document contains requirements, planned tests and expected results. It contains no claim that RTL, firmware or simulations already exist or pass.
+
+v1.1 changes: deadline priorities (section 0), a submission tier (section 4), the corrected exit FSM for challenge 4.5 (section 8.1), a long-run runtime budget (section 12), slide corrections and results-slide rules (sections 15.1-15.3), and a deadline risk.
+
+## 0. Deadline priority
+
+The graded deliverable is the PowerPoint, due before 1:00 pm on 25 October 2026. The challenge awards no marks for code. Simulation results go into the slides only as supporting evidence for the architecture answers.
+
+Work in this order:
+
+1. Slides answering 4.1-4.7 with the corrections in section 15.1. The deck must be submittable without any simulation result.
+2. Tier A simulation: D00, D01, D07 and D21. This is the realistic target for results shown in the slides.
+3. Showcase cases, in this order, each added only if it passes: D08 obstruction, D05 backup recovery, D03 no-show, D10 boundaries.
+4. Everything else stays in the backlog with status PLANNED.
+
+Time-box rules (proposed defaults; the team may move the times but should keep the rules):
+
+- Toolchain cut-off: if Icarus/VVP and an RV32I compiler are not producing a CPU boot by 22:00 on 24 October, stop simulation work and present the planned test matrix only.
+- Results freeze: stop running new cases at 10:00 on 25 October. Use the remaining time to insert evidence, rehearse and email the deck by 12:30.
+- Slides may show only results from real runs, each labelled with run ID, scenario and seed. A case that did not run is shown as PLANNED, never as PASS.
+- A Tier A-only result is presented as the "first integrated checkpoint", not as the full proof of concept.
 
 ## 1. Purpose and demonstration story
 
@@ -53,9 +73,12 @@ Success criteria:
 
 | Tier | Scope | Completion meaning |
 | --- | --- | --- |
+| 0: submission | Slides for 4.1-4.7 with section 15.1 corrections and the planned test matrix | Required for 25 October. Independent of every simulation tier |
 | A: first integrated checkpoint | Real CPU boot; immediate booking; normal entry, parking and exit; actual-duration event | Demonstrates integration only. Must not be presented as the full POC |
 | B: core showcase release | Tier A plus no-show, exact boundaries, backup success/failure, obstruction, long stay, duplicate messages, three random families without persistence cases | Minimum intended showcase release under this PRD |
 | C: full recovery extension | Durable journal, interrupted writes, warm reset/replay and reset during backup swap | Required before claiming reset/crash recovery |
+
+For the 25 October submission the target is Tier A plus whichever section 0 showcase cases pass. Tier B is a post-submission goal unless it finishes early.
 
 Tier B includes peripheral bus tests and an independent scoreboard. Tier C remains part of the baseline backlog; mark its scenarios skipped with a reason in a Tier B report. Do not silently remove them from the coverage denominator.
 
@@ -205,6 +228,57 @@ On obstruction during closing, inhibit close and request reopening; restart clos
 
 Capture physical exit and its timestamp at accepted crossing. Successful barrier closure, journal completion, bay release and billing ACK are separate facts. The presentation's EXIT_COMMIT state must not erase a real departure when later gate closure fails.
 
+### 8.1 Corrected exit FSM for challenge 4.5
+
+This replaces the exit FSM on preview slides 12, 13 and 32 in the submitted deck. Firmware owns validation and session records. Gate RTL owns motor sequencing, beam decoding, exit timestamp capture and the obstruction interlock.
+
+```mermaid
+stateDiagram-v2
+  [*] --> EXIT_IDLE
+  EXIT_IDLE --> EXIT_WAIT_ACPR: exit_presence
+  EXIT_WAIT_ACPR --> EXIT_VALIDATE: acpr_valid
+  EXIT_WAIT_ACPR --> EXIT_ASSIST: acpr_error or timeout
+  EXIT_VALIDATE --> EXIT_OPEN: active session matched
+  EXIT_VALIDATE --> EXIT_ASSIST: no active session
+  EXIT_OPEN --> EXIT_WAIT_PASS: exit_opened
+  EXIT_OPEN --> EXIT_FAULT: open timeout
+  EXIT_WAIT_PASS --> EXIT_RECORD: forward beam sequence
+  EXIT_WAIT_PASS --> EXIT_ASSIST: reverse, partial or timeout
+  EXIT_RECORD --> EXIT_WAIT_CLEAR: exit event captured
+  EXIT_WAIT_CLEAR --> EXIT_CLOSE: lane_clear
+  EXIT_WAIT_CLEAR --> EXIT_FAULT: obstruction timeout
+  EXIT_CLOSE --> EXIT_WAIT_CLEAR: obstruction, stop and reopen
+  EXIT_CLOSE --> EXIT_FINALIZE: exit_closed
+  EXIT_CLOSE --> EXIT_FAULT: close timeout
+  EXIT_FINALIZE --> EXIT_DONE: session record committed
+  EXIT_DONE --> EXIT_IDLE
+  EXIT_ASSIST --> EXIT_IDLE: operator clear
+  EXIT_FAULT --> EXIT_IDLE: operator clear
+```
+
+| State | Action | Guard and next state |
+| --- | --- | --- |
+| EXIT_IDLE | Barrier closed; wait for a vehicle at the exit | exit_presence=1 -> EXIT_WAIT_ACPR |
+| EXIT_WAIT_ACPR | Trigger plate recognition | acpr_valid -> EXIT_VALIDATE; acpr_error or timeout -> EXIT_ASSIST |
+| EXIT_VALIDATE | Firmware matches the plate token to an active session that is PARKED or has left its bay | match -> EXIT_OPEN; no match -> EXIT_ASSIST |
+| EXIT_OPEN | Request open; wait for limit feedback | exit_opened -> EXIT_WAIT_PASS; open timeout -> EXIT_FAULT |
+| EXIT_WAIT_PASS | Decode beams for the forward sequence `00 -> 10 -> 11 -> 01 -> 00` | complete sequence -> EXIT_RECORD; reverse, partial or timeout -> EXIT_ASSIST with no movement counted |
+| EXIT_RECORD | RTL captures the exit timestamp at the crossing. INSIDE_COUNT decrements once. Firmware queues PARKING_DURATION | exit event accepted -> EXIT_WAIT_CLEAR |
+| EXIT_WAIT_CLEAR | Hold open while the lane is obstructed. Do not wait for bay vacancy | lane_clear -> EXIT_CLOSE; obstruction timeout -> EXIT_FAULT with barrier left open |
+| EXIT_CLOSE | Request close. The hardware interlock blocks close under qualified obstruction | exit_closed -> EXIT_FINALIZE; obstruction -> stop, reopen, EXIT_WAIT_CLEAR; close timeout -> EXIT_FAULT |
+| EXIT_FINALIZE | Journal session close. Release the bay only with matching owner, confirmed departure and healthy vacant sensor; otherwise flag a discrepancy and keep the bay unavailable | record committed -> EXIT_DONE |
+| EXIT_DONE | Queue the cloud and app notification. Do not wait for its acknowledgement | -> EXIT_IDLE |
+| EXIT_ASSIST | Unmatched plate, ACPR failure or aborted passage. Show kiosk instruction and call an operator. Any close uses the same interlocked close path | operator clear -> EXIT_IDLE |
+| EXIT_FAULT | Motor or obstruction timeout. Raise the R9 cause and alarm. An exit already recorded in EXIT_RECORD is never undone | operator clear -> EXIT_IDLE |
+
+Differences from the preview slides, to state in the talk:
+
+1. EXIT_RECORD is new. The exit time is captured at the crossing, not after the barrier closes, so a closing failure cannot lose or lengthen the stay.
+2. EXIT_COMMIT becomes EXIT_FINALIZE. It finalises the session and bay release only.
+3. Obstruction during closing stops and reopens the barrier. Only a timeout is a fault.
+4. EXIT_DONE queues the cloud notification instead of waiting for it.
+5. The beam check is the full four-step overlap sequence, not "A then B".
+
 ## 9. Testbench design
 
 ### 9.1 Verification layers
@@ -330,6 +404,8 @@ After CPU boot, measure the maximum observed event-service cycles for the declar
 
 Do not run a 12-hour stay by reducing the 2700-second policy threshold. Ordinary tests keep monotonic time. If an externally permitted idle time synchronisation is used for boundary setup, identify it and keep it separate from elapsed-time validation. For long runs, dump selected summary signals and narrow transition windows rather than the complete core and RAM continuously. Report actual wall-clock runtime after measurement; no runtime target is a measured result yet.
 
+Runtime budget for long runs: after CPU boot, measure simulated cycles per wall-clock second on the presentation machine. Estimate the D22 runtime as 43,200 x cycles-per-logical-second / measured cycles-per-second. Disable full VCD dumping during the idle stay. If the estimate exceeds the time left before the results freeze, mark D22 BLOCKED (runtime) and show D03 or D05 instead. Never shorten the policy thresholds to make it fit.
+
 ## 13. Evidence package and figure specifications
 
 Use a small fixed set of figures; each should answer one engineering question. Architecture/FSM diagrams are design explanations. Waveforms and plots become results only when generated from a verified run.
@@ -427,6 +503,56 @@ Run the full suite before the talk. During the talk replay a short deterministic
 
 Recommended explanation snippets: allocator commit condition (about 10-20 lines), obstruction output guard, one beam-driver task, and one scoreboard comparison. Use the actual implemented source with path/line references. Explain intent and failure case, not every syntax detail.
 
+### 15.1 Slide corrections for the submitted deck
+
+Page numbers refer to `ReservePark_Flexible_Parking_Duration_Preview.pdf`. Apply these to the PowerPoint before adding results.
+
+| Page | Current content | Correction |
+| --- | --- | --- |
+| 4, 5 | Cloud confirms and "syncs assigned bay to local SoC"; T0 appears cloud-defined | Request -> payment authorisation -> local atomic commit sets T0 -> confirmation to app. Retransmitted confirmation keeps the original T0 |
+| 7 | Main controller drawn as an FSM block; no processor or RAM; blocks sit on a bar without explicit links | Add RISC-V core (PicoRV32, RV32I), program/data RAM and bus decoder. Draw each block's link to the bus. Show entry/exit gate FSMs as dedicated RTL. Add clock and reset |
+| 8 | Main Controller "runs entry/exit FSMs" | RISC-V firmware runs booking, deadline, recovery and billing policy. Gate RTL runs motor sequencing and the interlock. Add CPU and RAM rows |
+| 9 | emergency_button is "operator override" | Assistance request only. It never opens a gate or bypasses the obstruction interlock |
+| 9 | One barrier_opened/closed pair and one gate_obstruction | Per lane: entry_opened, entry_closed, exit_opened, exit_closed, entry_obstruction, exit_obstruction |
+| 9 | cloud_booking_rx carries booking T0 | Carries request ID, plate token and payment authorisation. T0 comes from the local commit |
+| 9 | camera_frame / acpr_result mixed; no widths; no clock, reset or debug pins | ACPR is a black box, so the SoC input is acpr_result (plate token, valid, error). Add a width column, clk, rst_n and a JTAG/debug port that 4.7 relies on |
+| 10 | Two overlapping timestamp rows; "encrypted ID" | Merge the timestamp rows. Say "hashed plate token" unless encryption is actually specified |
+| 11 | No bus offsets | Add an offset column 0x00-0x44 matching the simulation; note extensions start at 0x48 |
+| 22 | R3 IN_TRANSIT is "checked-in vehicle not yet parked / final exited" | Entered-not-parked plus left-bay-not-exited. Verified drivers still outside the gate are ARRIVAL_PENDING |
+| 24 | R7 ENTRY_PASSED / EXIT_PASSED are pulses | Sticky bits cleared by a W1C acknowledgement, so CPU polling cannot miss a crossing |
+| 26 | R9 type "RW/W1C" | RW1C; a new event wins over a clear in the same cycle |
+| 27 | R11 START_MBIST and "secured" injection | Label as proposed silicon DFx. Maintenance-mode injection is not authenticated security and cannot defeat the interlock |
+| 27 | R12 RTC_SECONDS is RO with no way to set it | Add a time-sync path; policy runs only when R1.TIME_VALID=1 |
+| 29 | R15 AUTO_ASSIGN "choose available normal bay" | Firmware selects the candidate; hardware revalidates and commits atomically or rejects |
+| 20-30 | Reset values written as 0, 1, 15 | Use the challenge template style, for example 1'b0 and 8'd15 |
+| 12, 13, 32 | EXIT_COMMIT after close; obstruction while closing goes to FAULT; "exit_A then exit_B"; EXIT_DONE waits for cloud | Replace with the section 8.1 FSM |
+| 16 | No obstruction, boundary or normal-exit test; D8 needs journal recovery; no result column | Add obstruction (D08), 899/900/901 and 2699/2700/2701 boundaries (D10), normal exit (D07) and a reset-initialisation check (D00). Mark slide D8 PLANNED unless Tier C passes. Add Status and Run ID columns |
+| 17 | Scan, compression and MBIST listed alongside demonstrated hooks | Split into "proposed silicon DFx" and "demonstrated in simulation" (trace buffer, sticky faults, raw versus qualified sensor view). Name the register bits used as hooks |
+| All | Bays named A12 and B03 | Add one footnote: the simulation uses bays 0-2 normal and bay 3 backup |
+| 20 (optional) | R0 has no assistance-button enable | The challenge example R0 has ENTRY_BUTTON/EXIT_BUTTON enables; adding them shows the template was followed |
+
+### 15.2 Test ID mapping between slides and PRD
+
+| Slide 4.6 ID | PRD ID | Tier |
+| --- | --- | --- |
+| D1 book with no departure time | D21 | A |
+| D2 simultaneous bookings | D12 | B |
+| D3 arrivals at +12 and +30 | D01, D02 | A, B |
+| D4 no arrival at +45 | D03 | B |
+| D5 A12 occupied, B03 free | D05 | B |
+| D6 A12 blocked, no backup | D06 | B |
+| D7 leave B03 after 12 hours | D22 backup variant, D28 | B |
+| D8 reset during swap | D27 | C |
+| R1, R2, R3 | R1, R2, R3 (restart subcases Tier C) | B, C |
+
+### 15.3 Results slides
+
+Add at most two results slides plus one limitations box, placed after 4.6:
+
+- **Test matrix.** Columns: slide ID, PRD ID, scenario, layer, status (PASS, FAIL, PLANNED, BLOCKED), run ID. Every planned row stays visible.
+- **One waveform per slide.** Use a section 13.1 preset with 8-16 signals and an E-series caption. Preferred order: E05 safety, E04 recovery, E03 CPU proof.
+- **Limitations box.** State that the simulation verifies the digital model, not sensors, timing closure or power-loss recovery, and that results are a checkpoint, not full verification.
+
 ## 16. Questions the team should be able to answer
 
 | Judge question | Evidence-backed answer to prepare |
@@ -462,6 +588,7 @@ WP6 begins with the first passing flow rather than waiting until the end. Keep t
 
 | Risk | Response |
 | --- | --- |
+| Simulation work consumes the time needed for the graded slides | Follow section 0 order, toolchain cut-off and results freeze; finish slides first |
 | Tools absent on current PATH; WSL not installed | Establish one supported native-Windows or WSL environment first; use portable runner; do not claim tests ran |
 | Cross-compiler emits unsupported instructions/helpers | Inspect ELF/disassembly; use freestanding RV32I startup and verified helper strategy |
 | Long-time simulation produces huge traces | Calibrate divider; log event summaries; narrow VCD windows; keep long-stay check intact |
@@ -488,5 +615,7 @@ Before presenting:
 - [ ] At least two hardware fault examples connect symptom -> hook -> test -> observation.
 - [ ] Conceptual, implemented, tested and pending features are distinguished.
 - [ ] PowerPoint filename, deadline, speaker allocation and offline demo fallback checked.
+
+Present status at v1.1: slide corrections, corrected exit FSM and deadline priorities added; PowerPoint and all simulation work still pending.
 
 Present status at PRD creation: source requirements reviewed; design and verification/evidence plan written; implementation, test execution, graphs derived from results and waveform captures pending. No real result values have been fabricated in this document.
