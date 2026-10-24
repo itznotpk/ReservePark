@@ -219,8 +219,8 @@ Formatting fix across all register slides: write reset values in the challenge t
 Three aligned diagrams. Recommended slide order:
 
 1. **Overall booking FSM** (`diagrams/overall_fsm.png`). One booking from request to close. Every arrow is labelled with the lane state that causes it. Put it just before 4.5 as the big picture.
-2. **Entry FSM** (`diagrams/entry_fsm.png`). Optional extra slide. Extends the challenge's entry template and replaces the entry table on preview page 14. State table in PRD section 8.2.
-3. **Exit FSM** (`diagrams/exit_fsm_4_5.png`). The required 4.5(a) answer. The 4.5(b) state table is in PRD section 8.1.
+2. **Entry FSM** (`diagrams/entry_fsm.png`). Optional extra slide. Extends the challenge's entry template and replaces the entry table on preview page 14. State table below.
+3. **Exit FSM** (`diagrams/exit_fsm_4_5.png`). The required 4.5(a) answer. The 4.5(b) state table is below.
 
 ![Overall booking FSM](diagrams/overall_fsm.png)
 
@@ -241,6 +241,67 @@ Five differences from the preview exit FSM to say out loud:
 3. Obstruction during closing stops and reopens the barrier. Only a timeout is a fault.
 4. EXIT_DONE queues the cloud notification instead of waiting for it.
 5. The beam check is the full four-step overlap sequence, not "A then B".
+
+### 4.5(b) State description tables
+
+The challenge asks to "document in a table and briefly describe each state", using its example format of State and Descriptions. One table per FSM diagram, same names and order as the diagrams. Put each table on its own slide next to its diagram. If a table is too dense for one slide, move the last two rows (ASSIST and FAULT) to a second slide. PRD sections 8.1 and 8.2 keep the full guard conditions.
+
+**Exit FSM — required for 4.5(b)**
+
+Title: `4.5(b) | Exit FSM state descriptions`
+
+| State | Description |
+| --- | --- |
+| EXIT_IDLE | Exit barrier is closed. Wait for a vehicle at the exit. |
+| EXIT_WAIT_ACPR | Start and wait for car plate recognition. An error or timeout goes to EXIT_ASSIST. |
+| EXIT_VALIDATE | Match the plate to an active parked session; the booking becomes EXIT_PENDING. No match goes to EXIT_ASSIST. |
+| EXIT_OPEN | Request barrier opening. Wait for exit_opened; a timeout goes to EXIT_FAULT. |
+| EXIT_WAIT_PASS | Check the beam order 00→10→11→01→00. A reverse, partial or timed-out passage goes to EXIT_ASSIST. |
+| EXIT_RECORD | Capture the exit timestamp at the crossing. Decrement the inside count once and queue the parking-duration bill. |
+| EXIT_WAIT_CLEAR | Keep the barrier open until the lane is clear. An obstruction timeout goes to EXIT_FAULT. |
+| EXIT_CLOSE | Request barrier closing; hardware blocks closing while obstructed. Obstruction reopens the barrier; wait for exit_closed. |
+| EXIT_FINALIZE | Commit the session close to NVM. Release the bay only if the owner matches and the bay is vacant and healthy. |
+| EXIT_DONE | Queue the app and cloud notification without waiting for a reply. Return to EXIT_IDLE. |
+| EXIT_ASSIST | Unmatched plate, recognition failure or aborted passage. Show a kiosk instruction and call an operator; no movement is counted. |
+| EXIT_FAULT | Motor or obstruction timeout. Raise the R9 fault and alarm; a recorded exit is never undone. |
+
+**Entry FSM — optional extra slide**
+
+Title: `Entry FSM state descriptions`
+
+| State | Description |
+| --- | --- |
+| ENTRY_IDLE | Entry barrier is closed. Wait for a vehicle at the entrance. |
+| ENTRY_WAIT_ACPR | Start and wait for car plate recognition. An error or timeout goes to ENTRY_ASSIST. |
+| ENTRY_VALIDATE | Match the plate to a held booking before the 45-minute cutoff. Record check-in and stop the no-show timer. |
+| ENTRY_PREFLIGHT | Check the assigned bay is still vacant and healthy. Replaces the template's ENTRY_CHECK_SPACE, since every car already has a bay. |
+| ENTRY_REASSIGN | Assigned bay is unusable. Atomically swap the booking to a free protected backup bay before opening; no backup goes to ENTRY_ASSIST. |
+| ENTRY_OPEN | Request barrier opening. Wait for entry_opened; a timeout goes to ENTRY_FAULT. |
+| ENTRY_WAIT_PASS | Check the beam order 00→10→11→01→00. A reverse, partial or timed-out passage goes to ENTRY_ASSIST. |
+| ENTRY_RECORD | Capture the entry timestamp at the crossing. Increment the inside count once; the booking becomes ENTERED_NOT_PARKED. |
+| ENTRY_WAIT_CLEAR | Keep the barrier open until the lane is clear. An obstruction timeout goes to ENTRY_FAULT. |
+| ENTRY_CLOSE | Request barrier closing; hardware blocks closing while obstructed. Obstruction reopens the barrier; wait for entry_closed. |
+| ENTRY_DONE | Show the assigned bay on the kiosk and notify the app. Return to ENTRY_IDLE. |
+| ENTRY_ASSIST | Unreadable plate, no valid booking, no backup bay or aborted passage. Call an operator; a verified driver is never charged a no-show fee. |
+| ENTRY_FAULT | Motor or obstruction timeout. Raise the R9 fault and alarm; a recorded entry is never undone. |
+
+**Overall booking FSM — extra slide before 4.5**
+
+Title: `Booking FSM state descriptions`
+
+| State | Description |
+| --- | --- |
+| REQUEST | App sends plate token and payment authorisation. Firmware picks a vacant, healthy normal bay. |
+| REJECTED | Authorisation or bay commit failed. No booking, no T0 and no timer; any provisional lock is rolled back. |
+| HELD | Bay locked and T0 set at local commit. On time up to 900 s, late from 900 s to 2700 s with one reminder. |
+| NO_SHOW | No verified arrival by 2700 s. Release the bay hold and send one no-show fee with a unique ID. |
+| ARRIVAL_PENDING | Plate verified at entry before the cutoff; timer stopped. The entry lane checks the bay and swaps to a backup if needed. |
+| MANUAL_REVIEW | No backup bay or an entry gate fault after check-in. Operator assists; never a no-show fee. |
+| ENTERED_NOT_PARKED | Entry crossing recorded and inside count incremented. Car is driving to its assigned bay. |
+| PARKED | Assigned bay sensor shows occupied. No departure deadline; a 12-hour stay is valid. |
+| EXIT_PENDING | Plate matched at the exit lane. Barrier opening for this session. An aborted passage returns to PARKED. |
+| EXITED_RECONCILE | Exit time frozen at the crossing and duration bill queued. Waiting for the bay sensor to confirm vacant. |
+| CLOSED | Owner matched and bay vacant and healthy. Bay released to its normal or backup pool; session archived. |
 
 ---
 
