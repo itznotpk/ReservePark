@@ -146,8 +146,8 @@ def block_diagram():
     b.path("M262,505 H316", BUS, 2.5)
     b.rect(20, 600, 240, 280, f, st)
     b.text(140, 632, "Lane + bay sensors", 15, 700)
-    sensors = ["entry / exit presence", "beams A/B (each lane)", "bay occupancy [0:3]",
-               "barrier limit switches", "lane obstruction (×2)", "assistance button"]
+    sensors = ["entry / exit presence", "beams A/B (each lane)", "bay occupancy [3:0]",
+               "barrier limit switches", "lane obstruction (×2)", "assistance buttons (×2)"]
     for k, t in enumerate(sensors):
         b.text(40, 664 + 34 * k, "• " + t, 13, 400, SUB, "start")
     b.path("M262,760 H560 V562", BUS, 2.5)

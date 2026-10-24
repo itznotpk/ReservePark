@@ -102,10 +102,10 @@
 <text x="140" y="632" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1B2333" text-anchor="middle">Lane + bay sensors</text>
 <text x="40" y="664" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• entry / exit presence</text>
 <text x="40" y="698" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• beams A/B (each lane)</text>
-<text x="40" y="732" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• bay occupancy [0:3]</text>
+<text x="40" y="732" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• bay occupancy [3:0]</text>
 <text x="40" y="766" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• barrier limit switches</text>
 <text x="40" y="800" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• lane obstruction (×2)</text>
-<text x="40" y="834" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• assistance button</text>
+<text x="40" y="834" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="start">• assistance buttons (×2)</text>
 <path d="M262,760 H560 V562" fill="none" stroke="#1F2A44" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
 <text x="410" y="750" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12" font-weight="400" fill="#4A5568" text-anchor="middle" font-style="italic">raw sensor inputs</text>
 <rect x="1660" y="440" width="240" height="60" rx="10" fill="#F1F3F6" stroke="#7D8799" stroke-width="2"/>

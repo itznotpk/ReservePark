@@ -549,11 +549,11 @@ Page numbers refer to `ReservePark_Flexible_Parking_Duration_Preview.pdf`. Apply
 | --- | --- | --- |
 | 4, 5 | Cloud confirms and "syncs assigned bay to local SoC"; T0 appears cloud-defined | Request -> payment authorisation -> local atomic commit sets T0 -> confirmation to app. Retransmitted confirmation keeps the original T0 |
 | 7 | Main controller drawn as an FSM block; no processor or RAM; blocks sit on a bar without explicit links | Add RISC-V core (PicoRV32, RV32I), program/data RAM and bus decoder. Draw each block's link to the bus. Show entry/exit gate FSMs as dedicated RTL. Add clock and reset |
-| 8 | Main Controller "runs entry/exit FSMs" | RISC-V firmware runs booking, deadline, recovery and billing policy. Gate RTL runs motor sequencing and the interlock. Add CPU and RAM rows |
-| 9 | emergency_button is "operator override" | Assistance request only. It never opens a gate or bypasses the obstruction interlock |
+| 8 | Main Controller "runs entry/exit FSMs"; rows do not match the block diagram | One row per 4.1 block (14 rows). RISC-V CPU runs booking, deadline, recovery and billing policy; Entry and Exit gate FSM blocks run motor sequencing and the interlock. Merge the allocator and backup pool into one Bay allocator. Add CPU, RAM and Input qualifier rows |
+| 9 | emergency_button is "operator override" | One assistance button per kiosk (assist_btn_entry, assist_btn_exit). It never opens a gate or bypasses the obstruction interlock |
 | 9 | One barrier_opened/closed pair and one gate_obstruction | Per lane: entry_opened, entry_closed, exit_opened, exit_closed, entry_obstruction, exit_obstruction |
-| 9 | cloud_booking_rx carries booking T0 | Carries request ID, plate token and payment authorisation. T0 comes from the local commit |
-| 9 | camera_frame / acpr_result mixed; no widths; no clock, reset or debug pins | ACPR is a black box, so the SoC input is acpr_result (plate token, valid, error). Add a width column, clk, rst_n and a JTAG/debug port that 4.7 relies on |
+| 9 | Eight cloud/payment "signals"; cloud_booking_rx carries booking T0 | One physical net link (net_tx, net_rx) to the LAN / Wi-Fi gateway, plus a separate message table. booking_request carries request ID, plate token and payment authorisation; T0 comes from the local commit |
+| 9 | camera_frame / acpr_result mixed; no widths; no clock, reset, flash or debug pins | ACPR is an on-chip black box (4.1 diagram), so the SoC inputs are per-lane camera pixel buses. Add a width column, clk, rst_n, SPI flash pins for the NVM journal and JTAG pins (tck, tms, tdi, tdo) that 4.7 relies on. The simulation models the ACPR by its output only (plate token, valid, error) |
 | 10 | Two overlapping timestamp rows; "encrypted ID" | Merge the timestamp rows. Say "hashed plate token" unless encryption is actually specified |
 | 11 | No bus offsets | Add an offset column 0x00-0x44 matching the simulation; note extensions start at 0x48 |
 | 22 | R3 IN_TRANSIT is "checked-in vehicle not yet parked / final exited" | Entered-not-parked plus left-bay-not-exited. Verified drivers still outside the gate are ARRIVAL_PENDING |
@@ -568,7 +568,7 @@ Page numbers refer to `ReservePark_Flexible_Parking_Duration_Preview.pdf`. Apply
 | 16 | No obstruction, boundary or normal-exit test; D8 needs journal recovery; no result column | Add obstruction (D08), 899/900/901 and 2699/2700/2701 boundaries (D10), normal exit (D07) and a reset-initialisation check (D00). Mark slide D8 PLANNED unless Tier C passes. Add Status and Run ID columns |
 | 17 | Scan, compression and MBIST listed alongside demonstrated hooks | Split into "proposed silicon DFx" and "demonstrated in simulation" (trace buffer, sticky faults, raw versus qualified sensor view). Name the register bits used as hooks |
 | All | Bays named A12 and B03 | Add one footnote: the simulation uses bays 0-2 normal and bay 3 backup |
-| 20 (optional) | R0 has no assistance-button enable | The challenge example R0 has ENTRY_BUTTON/EXIT_BUTTON enables; adding them shows the template was followed |
+| 20 (optional) | R0 has no assistance-button enable | Add ASSIST_ENTRY_EN [4] and ASSIST_EXIT_EN [5], RW, reset 1'b1, matching the challenge example R0 and the two assist buttons in 4.3 |
 
 ### 15.2 Test ID mapping between slides and PRD
 
