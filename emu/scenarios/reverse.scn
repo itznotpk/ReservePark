@@ -1,0 +1,15 @@
+# Reverse and partial crossings are not counted; a forward crossing is  [D13]
+WAITUNTIL 10
+BOOK A1
+WAIT 1
+WAITUNTIL 100
+CAMERA entry A1
+WAITC 80
+EXPECT grant_entry=1
+REVERSE entry
+PARTIAL entry
+WAITC 20
+EXPECT inside=0 bad_seq_entry=1 n_ASSIST_NEEDED=0
+PASS entry
+WAIT 2
+EXPECT inside=1 n_ASSIST_NEEDED=0

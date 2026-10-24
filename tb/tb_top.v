@@ -1,6 +1,6 @@
 `include "defines.vh"
 // System bench: clock, drivers, models, monitor, per-cycle invariant checks.
-// Phase 3: driver tasks and a built-in self-test. Phase 4 adds the scenario reader.
+// Without +SCN it runs a built-in self-test; with +SCN=<file> it runs a scenario script.
 module tb_top;
     reg clk = 0, rst_n = 0;
     always #5 clk = ~clk;
@@ -190,7 +190,7 @@ module tb_top;
             ea = 0; eb = 0; xa = 0; xb = 0; obs_e = 0; obs_x = 0; occ = 0; flt = 0; e_stuck = 0; x_stuck = 0;
             repeat (4) @(posedge clk); #1 rst_n = 1;
             bk.reset_state;
-            n_grant_e = 0; n_grant_x = 0; n_reopen_e = 0; n_reopen_x = 0; arrows_seen = 0;
+            n_grant_e = 0; n_grant_x = 0; n_reopen_e = 0; n_reopen_x = 0;
             n_pl = 0; pq_h = 0; pq_t = 0;
             for (k = 0; k < 256; k = k + 1) id2idx[k] = -1;
             wait_c(4);
@@ -361,6 +361,177 @@ module tb_top;
             wait_s(3);
             chk_eq("entry_gate_closed", e_pos, 0);
 
+            if (fails == 0) $display("tb_top: PASS");
+            else $display("tb_top: FAIL (%0d failures)", fails);
+            $finish;
+        end
+    end
+
+    // ---------------------------------------------------------------- scenario reader (phase 4)
+    // Token stream read with $fscanf("%s"). Any token containing an equals sign is an EXPECT key=value pair.
+    reg [8*200-1:0] scn_name, junk_line;
+    integer fd, rc, scn_done;
+    reg [8*48-1:0] tok, tok2;
+    reg [15:0] hexv, hexv2;
+    integer num1;
+
+    function integer tlen(input [8*48-1:0] t);
+        integer i;
+        begin tlen = 0; for (i = 0; i < 48; i = i + 1) if (t[8*i +: 8] != 8'd0) tlen = i + 1; end
+    endfunction
+
+    function has_eq(input [8*48-1:0] t);
+        integer i;
+        begin has_eq = 0; for (i = 0; i < 48; i = i + 1) if (t[8*i +: 8] == "=") has_eq = 1; end
+    endfunction
+
+    function integer sym(input [8*48-1:0] s);
+        begin
+            case (s)
+                "BOOKED": sym = `MSG_BOOKED;       "REJECT_FULL": sym = `MSG_REJECT_FULL;
+                "LATE": sym = `MSG_LATE;           "REASSIGN": sym = `MSG_REASSIGN;
+                "ASSIST_NEEDED": sym = `MSG_ASSIST_NEED; "ASSIST": sym = `MSG_ASSIST;
+                "NOSHOW_FEE": sym = `MSG_NOSHOW_FEE; "DURATION": sym = `MSG_DURATION;
+                "REFUND": sym = `MSG_REFUND;
+                "IDLE": sym = `DSP_IDLE;           "GO_BAY": sym = `DSP_GO_BAY;
+                "NO_BOOKING": sym = `DSP_NO_BOOKING; "SEE_STAFF": sym = `DSP_SEE_STAFF;
+                "HELP_COMING": sym = `DSP_HELP_COMING;
+                "open": sym = 10;                  "closed": sym = 0;
+                default: sym = -999;
+            endcase
+        end
+    endfunction
+
+    // number (decimal digits) or symbolic name
+    function integer parse_val(input [8*48-1:0] s);
+        integer i, n, ok, ch;
+        begin
+            n = 0; ok = 1;
+            for (i = 47; i >= 0; i = i - 1) begin
+                ch = s[8*i +: 8];
+                if (ch != 0) begin
+                    if (ch >= "0" && ch <= "9") n = n * 10 + (ch - "0"); else ok = 0;
+                end
+            end
+            parse_val = ok ? n : sym(s);
+        end
+    endfunction
+
+    // index of the last message of type t in the backend log, or -1
+    function integer last_of(input integer t);
+        integer k;
+        begin last_of = -1; for (k = 0; k < bk.n_msgs; k = k + 1) if (bk.log[k][45:42] == t) last_of = k; end
+    endfunction
+
+    function prefix_is(input [8*48-1:0] k, input integer kl, input integer pl, input [8*8-1:0] p);
+        begin prefix_is = (kl > pl) && ((k >> (8 * (kl - pl))) == p); end
+    endfunction
+
+    task do_expect(input [8*48-1:0] t);
+        integer L, eqi, i, kl, val, got, li;
+        reg [8*48-1:0] k, v, nm;
+        begin
+            L = tlen(t); eqi = -1;
+            for (i = 0; i < L; i = i + 1) if (t[8*i +: 8] == "=" && eqi < 0) eqi = i;
+            kl = L - eqi - 1;
+            v  = (t << (8 * (48 - eqi))) >> (8 * (48 - eqi));
+            k  = t >> (8 * (eqi + 1));
+            val = parse_val(v);
+            if (val == -999) begin fail("EXPECT: unknown value"); $fdisplay(lf, "       token %0s", t); end
+            else if (k == "msgs")          chk_eq(k, bk.n_msgs, val);
+            else if (k == "grant_entry")   chk_eq(k, n_grant_e, val);
+            else if (k == "grant_exit")    chk_eq(k, n_grant_x, val);
+            else if (k == "display")       chk_eq(k, disp_msg, val);
+            else if (k == "display_bay")   chk_eq(k, disp_bay, val);
+            else if (k == "owner")         chk_eq(k, owner, val);
+            else if (k == "inside")        chk_eq(k, inside_n, val);
+            else if (k == "fees")          chk_eq(k, bk.fees, val);
+            else if (k == "fee_sends")     chk_eq(k, bk.fee_sends, val);
+            else if (k == "bookable")      chk_eq(k, dut.c_book, val);
+            else if (k == "backup_free")   chk_eq(k, dut.c_bk, val);
+            else if (k == "bad_seq_entry") chk_eq(k, dut.ent_bad, val);
+            else if (k == "bad_seq_exit")  chk_eq(k, dut.exi_bad, val);
+            else if (k == "entry_gate")    chk_eq(k, e_pos, val);
+            else if (k == "exit_gate")     chk_eq(k, x_pos, val);
+            else if (k == "entry_reopens") chk_eq(k, n_reopen_e, val);
+            else if (k == "exit_reopens")  chk_eq(k, n_reopen_x, val);
+            else if (k == "entry_fault")   chk_eq(k, ef, val);
+            else if (k == "exit_fault")    chk_eq(k, xf, val);
+            else if (k == "dur_min") begin
+                li = last_of(`MSG_DURATION);
+                if (li < 0 || bk.log[li][31:0] < val) fail("EXPECT dur_min violated");
+                else $fdisplay(lf, "[cyc=%0d t=%0ds] ok   expect duration %0d >= %0d", tcyc, now_s, bk.log[li][31:0], val);
+            end
+            else if (k == "dur_max") begin
+                li = last_of(`MSG_DURATION);
+                if (li < 0 || bk.log[li][31:0] > val) fail("EXPECT dur_max violated");
+                else $fdisplay(lf, "[cyc=%0d t=%0ds] ok   expect duration %0d <= %0d", tcyc, now_s, bk.log[li][31:0], val);
+            end
+            else if (prefix_is(k, kl, 2, "n_")) begin
+                nm = (k << (8 * (48 - (kl - 2)))) >> (8 * (48 - (kl - 2)));
+                got = sym(nm);
+                if (got < 1 || got > 9) fail("EXPECT n_<TYPE>: unknown type");
+                else chk_eq(k, n_of_type(got), val);
+            end
+            else if (prefix_is(k, kl, 7, "bay_of_")) begin
+                nm = (k << (8 * (48 - (kl - 7)))) >> (8 * (48 - (kl - 7)));
+                li = last_of(sym(nm));
+                if (li < 0) fail("EXPECT bay_of_<TYPE>: no such message");
+                else chk_eq(k, bk.log[li][33:32], val);
+            end
+            else if (prefix_is(k, kl, 3, "msg")) begin
+                nm = (k << (8 * (48 - (kl - 3)))) >> (8 * (48 - (kl - 3)));
+                li = parse_val(nm);
+                if (li < 0 || li >= bk.n_msgs) fail("EXPECT msg<i>: no such message");
+                else chk_eq(k, bk.log[li][45:42], val);
+            end
+            else begin fail("EXPECT: unknown key"); $fdisplay(lf, "       key %0s", k); end
+        end
+    endtask
+
+    initial begin
+        if ($value$plusargs("SCN=%s", scn_name)) begin
+            repeat (3) @(posedge clk);
+            fd = $fopen(scn_name, "r");
+            if (fd == 0) begin
+                $display("tb_top: FAIL cannot open scenario %0s", scn_name);
+                $finish;
+            end
+            do_reset;
+            scn_done = 0;
+            while (!scn_done) begin
+                rc = $fscanf(fd, "%s", tok);
+                if (rc != 1) scn_done = 1;
+                else if (tok[8 * (tlen(tok) - 1) +: 8] == "#") rc = $fgets(junk_line, fd);
+                else if (has_eq(tok)) do_expect(tok);
+                else case (tok)
+                    "EXPECT": ;
+                    "RESET":    do_reset;
+                    "CFG":      begin rc = $fscanf(fd, "%h %h", hexv, hexv2); bus_write(hexv[7:0], hexv2); end
+                    "BOOK":     begin rc = $fscanf(fd, "%h", hexv); book(hexv); end
+                    "CAMERA":   begin rc = $fscanf(fd, "%s %h", tok2, hexv); camera(tok2 == "exit", hexv); end
+                    "PASS":     begin rc = $fscanf(fd, "%s", tok2); pass_fwd(tok2 == "exit"); end
+                    "REVERSE":  begin rc = $fscanf(fd, "%s", tok2); pass_rev(tok2 == "exit", 0); end
+                    "PARTIAL":  begin rc = $fscanf(fd, "%s", tok2); pass_rev(tok2 == "exit", 1); end
+                    "BAY":      begin rc = $fscanf(fd, "%d %s", num1, tok2); set_bay(num1, tok2); end
+                    "OBSTRUCT": begin rc = $fscanf(fd, "%s %s", tok, tok2); obstruct(tok == "exit", tok2 == "on"); end
+                    "WAIT":     begin rc = $fscanf(fd, "%d", num1); wait_s(num1); end
+                    "WAITC":    begin rc = $fscanf(fd, "%d", num1); wait_c(num1); end
+                    "WAITUNTIL": begin
+                        rc = $fscanf(fd, "%d", num1);
+                        while (now_s < num1) @(posedge clk);
+                        #1;
+                    end
+                    "ACK":      ack;
+                    "DROPACK":  begin rc = $fscanf(fd, "%d", num1); bk.drop_n = num1; end
+                    "ASSIST":   assist;
+                    "OPERATOR": begin rc = $fscanf(fd, "%d %s", num1, tok2); operator(num1, tok2 == "RESOLVE" ? `OP_RESOLVE : `OP_RETRY); end
+                    "STUCK":    begin rc = $fscanf(fd, "%s", tok2); if (tok2 == "exit") x_stuck = 1; else e_stuck = 1; end
+                    default: begin fail("unknown scenario command"); $fdisplay(lf, "       token %0s", tok); end
+                endcase
+            end
+            $fclose(fd);
+            $display("ARROWS=%b", arrows_seen);
             if (fails == 0) $display("tb_top: PASS");
             else $display("tb_top: FAIL (%0d failures)", fails);
             $finish;

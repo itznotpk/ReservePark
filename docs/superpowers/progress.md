@@ -7,7 +7,7 @@ Phase 0: DONE
 Phase 1: DONE
 Phase 2: DONE
 Phase 3: DONE
-Phase 4: TODO
+Phase 4: DONE
 Phase 5: TODO
 
 ## Design questions
@@ -26,6 +26,9 @@ Phase 5: TODO
 - Phase 3 has no explicit "Done when" command in the design. Chose `python emu/run.py --top`: compiles tb/models.v + tb/tb_top.v + chip, runs the built-in self-test (normal lifecycle with backend ack, then obstruction-while-closing) with all invariants live; DONE when it prints PASS.
 - Invariant "closing on obstruction" is judged against the raw beams with an 8-cycle allowance for the 2-FF + debounce filter latency.
 - The no-show invariant uses the bench's own bookkeeping (time of the book call and of the entry camera call), fails only if the camera came at least 2 s before the deadline.
+- BOOK_REQ t0 (and the BOOKED value) = capture timestamp of the event, not now_s at processing (processing takes ~14 cycles and can cross a second boundary, which made boundary tests unreliable). Equivalent when processed within the same second.
+- Boundary at exactly t0+2700: deadline scan and a camera event captured at that second race when the queue is idle (scan can win). Only a camera served from a busy queue is judged purely by capture ts; boundary.scn and race.scn keep the queue busy for those cases.
+- Scenario syntax extras beyond the design list: WAITUNTIL s (absolute chip second), WAITC n (cycles), PARTIAL entry|exit, RESET, STUCK entry|exit. EXPECT keys: msgs, msg<i>, n_<TYPE> (raw sends incl. retries), bay_of_<TYPE>, grant_entry/exit, display, display_bay, owner (decimal mask), inside, fees (distinct fee ids), fee_sends, bookable, backup_free, bad_seq_entry/exit, entry_gate/exit_gate (open|closed), entry_reopens, dur_min, dur_max.
 
 ## Log
 
@@ -42,3 +45,29 @@ Phase 5: TODO
 - 2026-10-24 Phase 3: wrote tb/models.v (motor_model, backend_model), tb/tb_top.v (drivers book/camera/pass_fwd/pass_rev/set_bay/obstruct/ack/operator/assist/wait_s, monitor log, invariants, built-in self-test); emu/run.py gained --top.
   Mutation check: removing the obstruction guard and reopen in barrier_ctrl made `--top` print FAIL (8 failures); restored.
   `python emu/run.py --top` -> `PASS  top (built-in self-test)`.
+- 2026-10-24 Phase 4: scenario reader in tb/tb_top.v, emu/run.py (--scn, --all, --wave), 16 scenarios in emu/scenarios/. Control Unit t0 now uses capture ts.
+  Found and fixed: boundary.scn originally could not tell `<` from `<=` at t0+2700 (scan wins the race on an idle queue); reworked with a busy queue, verified the mutation `ev_ts <= t0+NOSHOW_S` now makes boundary FAIL, restored.
+  `python emu/run.py --all` (final, after the fix) ->
+```
+scenario       result  fails  arrows(hex)  secs
+assist         PASS        0          00b   0.4
+boundary       PASS        0          007  29.9
+dup_ack        PASS        0          005   7.6
+entry_timeout  PASS        0          09b   8.8
+exit_occupied  PASS        0          02b   0.7
+full           PASS        0          001   0.1
+late           PASS        0          02b   5.2
+no_backup      PASS        0          113   9.3
+normal         PASS        0          02b  12.1
+noshow         PASS        0          005   7.6
+obstruct       PASS        0          00b   0.4
+race           PASS        0          003   7.6
+recovery       PASS        0          00b   0.6
+reverse        PASS        0          00b   0.4
+stall          PASS        0          14b   4.6
+wrong_plate    PASS        0          005   7.6
+16/16 scenarios passed
+arrows exercised: 9/9
+RESULT: PASS
+```
+  Also: `python emu/run.py --unit all` -> 12/12 PASS; `python emu/run.py --top` -> PASS.

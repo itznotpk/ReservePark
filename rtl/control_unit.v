@@ -348,9 +348,9 @@ module control_unit (
                                     r_valid <= 1'b1; r_state <= `ST_HELD; r_gen <= u_gen + 5'd1;
                                     r_plate <= ev_plate; r_bay <= ba_rsp_bay; r_obay <= ba_rsp_bay;
                                     r_recov <= 1'b0; r_late <= 1'b0; r_parked <= 1'b0;
-                                    r_t0 <= now_s; r_ents <= 32'd0; wr_pend <= 1'b1;
+                                    r_t0 <= ev_ts; r_ents <= 32'd0; wr_pend <= 1'b1;
                                     msg_en <= 1'b1; m_type <= `MSG_BOOKED;
-                                    m_book <= {u_gen + 5'd1, tgt}; m_bay <= ba_rsp_bay; m_val <= now_s;
+                                    m_book <= {u_gen + 5'd1, tgt}; m_bay <= ba_rsp_bay; m_val <= ev_ts;
                                     arrow_pend[0] <= 1'b1;
                                 end else begin
                                     msg_en <= 1'b1; m_type <= `MSG_REJECT_FULL; m_book <= 8'd0; m_bay <= 2'd0;

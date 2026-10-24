@@ -1,0 +1,16 @@
+# Bay 0 taken and backup faulty: REVIEW, no fee, operator refund  [D06]
+WAITUNTIL 10
+BOOK A1
+WAIT 1
+BAY 0 OCC
+BAY 3 FAULT
+WAITUNTIL 200
+CAMERA entry A1
+WAITC 80
+EXPECT n_ASSIST_NEEDED=1 display=SEE_STAFF grant_entry=0 n_REASSIGN=0 n_NOSHOW_FEE=0 owner=1
+# a REVIEW session is never charged a no-show fee
+WAITUNTIL 3300
+EXPECT n_NOSHOW_FEE=0 owner=1 n_ASSIST_NEEDED=1
+OPERATOR 0 RESOLVE
+WAIT 1
+EXPECT n_REFUND=1 owner=0 n_NOSHOW_FEE=0

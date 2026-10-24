@@ -1,0 +1,19 @@
+# Assist button from several states  [brief test 12]
+WAIT 1
+ASSIST
+WAIT 1
+EXPECT n_ASSIST=1 display=HELP_COMING msgs=1
+BOOK A1
+WAIT 1
+ASSIST
+WAIT 1
+EXPECT n_ASSIST=2 display=HELP_COMING owner=1
+WAITUNTIL 100
+CAMERA entry A1
+WAITC 80
+PASS entry
+BAY 0 OCC
+WAIT 2
+ASSIST
+WAIT 1
+EXPECT n_ASSIST=3 inside=1 display=HELP_COMING n_ASSIST_NEEDED=0

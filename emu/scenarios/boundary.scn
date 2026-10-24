@@ -1,0 +1,70 @@
+# Arrival exactly around the grace (900 s) and no-show (2700 s) boundaries  [D10]
+# t0 = 10. camera at 10+899 / 10+900 / 10+901 and 10+2699 / 10+2700 / 10+2701
+WAITUNTIL 10
+BOOK A1
+WAITUNTIL 909
+CAMERA entry A1
+WAITC 80
+EXPECT grant_entry=1 n_LATE=0 n_NOSHOW_FEE=0
+RESET
+WAITUNTIL 10
+BOOK A1
+WAITUNTIL 910
+CAMERA entry A1
+WAITC 80
+EXPECT grant_entry=1 n_NOSHOW_FEE=0
+RESET
+WAITUNTIL 10
+BOOK A1
+WAITUNTIL 911
+CAMERA entry A1
+WAITC 80
+EXPECT grant_entry=1 n_LATE=1 n_NOSHOW_FEE=0
+RESET
+WAITUNTIL 10
+BOOK A1
+WAITUNTIL 2709
+CAMERA entry A1
+WAITC 80
+EXPECT grant_entry=1 n_LATE=1 n_NOSHOW_FEE=0 display=GO_BAY
+RESET
+# The next two cases keep the queue busy so the camera event is served before the
+# deadline scan runs: only its capture time decides. WAITC 4 puts the first duplicate
+# BOOK 4 cycles into second 2709; each BOOK takes 2 cycles, so the camera is captured
+# at 2710 after 7 BOOKs (10+2700, too late) and at 2711 after 14 BOOKs (10+2701).
+WAITUNTIL 10
+BOOK A1
+WAITUNTIL 2709
+WAITC 4
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+CAMERA entry A1
+WAIT 20
+EXPECT grant_entry=0 fees=1 display=NO_BOOKING
+RESET
+WAITUNTIL 10
+BOOK A1
+WAITUNTIL 2709
+WAITC 4
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+CAMERA entry A1
+WAIT 25
+EXPECT grant_entry=0 fees=1 display=NO_BOOKING

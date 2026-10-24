@@ -1,0 +1,14 @@
+# Bay 0 taken by a stranger: swap to backup bay 3 before the gate opens  [D05]
+WAITUNTIL 10
+BOOK A1
+WAIT 2
+EXPECT bay_of_BOOKED=0 owner=1 backup_free=1
+BAY 0 OCC
+WAITUNTIL 200
+CAMERA entry A1
+WAITC 80
+EXPECT n_REASSIGN=1 bay_of_REASSIGN=3 grant_entry=1 display=GO_BAY display_bay=3 owner=8 n_ASSIST_NEEDED=0 n_NOSHOW_FEE=0
+PASS entry
+BAY 3 OCC
+WAIT 2
+EXPECT inside=1 backup_free=0 owner=8
