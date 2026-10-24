@@ -6,7 +6,7 @@ Branch: rtl-sim
 Phase 0: DONE
 Phase 1: DONE
 Phase 2: DONE
-Phase 3: TODO
+Phase 3: DONE
 Phase 4: TODO
 Phase 5: TODO
 
@@ -23,6 +23,9 @@ Phase 5: TODO
 - RETRY whose swap fails leaves the record in REVIEW with a fresh ASSIST_NEEDED message and no arrow.
 - Operator commands are served after queued events and before the deadline scan; a command arriving while another is pending overwrites it.
 - Top exposes observation ports (arrow_fire, cu_state, bay_owner, inside_count, ...) for the phase 3 monitor; INSIDE_COUNT = entry passages - exit passages.
+- Phase 3 has no explicit "Done when" command in the design. Chose `python emu/run.py --top`: compiles tb/models.v + tb/tb_top.v + chip, runs the built-in self-test (normal lifecycle with backend ack, then obstruction-while-closing) with all invariants live; DONE when it prints PASS.
+- Invariant "closing on obstruction" is judged against the raw beams with an 8-cycle allowance for the 2-FF + debounce filter latency.
+- The no-show invariant uses the bench's own bookkeeping (time of the book call and of the entry camera call), fails only if the camera came at least 2 s before the deadline.
 
 ## Log
 
@@ -36,3 +39,6 @@ Phase 5: TODO
 - 2026-10-24 Phase 2: wrote rtl/control_unit.v, rtl/reservepark_top.v (full wiring), tb/unit/tb_control_unit.v (directed slices A-J, all 9 arrows), tb/unit/tb_reservepark_top.v (hard-coded normal lifecycle through pins).
   Mutation check: changing arrival test `<` to `<=` made tb_control_unit FAIL (restored).
   `python emu/run.py --unit all` -> PASS for barrier_ctrl, bay_alloc, control_unit, display, event_queue, input_filter, memory, out_queue, registers, reservepark_top, smoke, timer (rc=0).
+- 2026-10-24 Phase 3: wrote tb/models.v (motor_model, backend_model), tb/tb_top.v (drivers book/camera/pass_fwd/pass_rev/set_bay/obstruct/ack/operator/assist/wait_s, monitor log, invariants, built-in self-test); emu/run.py gained --top.
+  Mutation check: removing the obstruction guard and reopen in barrier_ctrl made `--top` print FAIL (8 failures); restored.
+  `python emu/run.py --top` -> `PASS  top (built-in self-test)`.
