@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1350" viewBox="0 0 2400 1350">
+<defs><marker id="a1F2A44" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1F2A44"/></marker><marker id="s1F2A44" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#1F2A44"/></marker><marker id="aC92A2A" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C92A2A"/></marker><marker id="sC92A2A" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#C92A2A"/></marker><marker id="a22915A" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#22915A"/></marker><marker id="s22915A" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#22915A"/></marker><marker id="aE8590C" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#E8590C"/></marker><marker id="sE8590C" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#E8590C"/></marker><marker id="a9AA6B8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9AA6B8"/></marker><marker id="s9AA6B8" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#9AA6B8"/></marker></defs>
+<rect width="2400" height="1350" fill="#FFFFFF"/>
+<rect x="30" y="50" width="590" height="920" rx="14" fill="#F7F9FC" stroke="#DCE3EE" stroke-width="1.5"/>
+<text x="50" y="88" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#2F6FDE" text-anchor="start">1 · Booking + no-show timer</text>
+<rect x="640" y="50" width="700" height="920" rx="14" fill="#F7F9FC" stroke="#DCE3EE" stroke-width="1.5"/>
+<text x="660" y="88" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#22915A" text-anchor="start">2 · Entry lane + bay recovery</text>
+<rect x="1360" y="50" width="420" height="920" rx="14" fill="#F7F9FC" stroke="#DCE3EE" stroke-width="1.5"/>
+<text x="1380" y="88" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#2F6FDE" text-anchor="start">3 · Parked</text>
+<rect x="1800" y="50" width="570" height="920" rx="14" fill="#F7F9FC" stroke="#DCE3EE" stroke-width="1.5"/>
+<text x="1820" y="88" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#2F6FDE" text-anchor="start">4 · Exit + settlement</text>
+<rect x="60" y="170" width="220" height="110" rx="12" fill="#EAF1FD" stroke="#2F6FDE" stroke-width="2.5"/>
+<text x="170" y="206" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">REQUEST</text>
+<text x="170" y="234" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">plate token +</text>
+<text x="170" y="254" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">payment authorisation</text>
+<rect x="384" y="164" width="232" height="122" rx="16" fill="#FFFFFF" stroke="#5A6578" stroke-width="2"/>
+<rect x="390" y="170" width="220" height="110" rx="12" fill="#F1F3F6" stroke="#5A6578" stroke-width="2.5"/>
+<text x="500" y="206" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">REJECTED</text>
+<text x="500" y="234" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">no T0, no countdown;</text>
+<text x="500" y="254" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">lock rolled back</text>
+<rect x="60" y="390" width="220" height="110" rx="12" fill="#E0F2E8" stroke="#22915A" stroke-width="3"/>
+<text x="170" y="426" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">HELD</text>
+<text x="170" y="454" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">0–900 s on time;</text>
+<text x="170" y="474" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">900–2700 s late, 1 reminder</text>
+<rect x="54" y="604" width="232" height="122" rx="16" fill="#FFFFFF" stroke="#5A6578" stroke-width="2"/>
+<rect x="60" y="610" width="220" height="110" rx="12" fill="#F1F3F6" stroke="#5A6578" stroke-width="2.5"/>
+<text x="170" y="646" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">NO_SHOW</text>
+<text x="170" y="674" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">hold released;</text>
+<text x="170" y="694" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">one NO_SHOW_FEE ID</text>
+<rect x="650" y="390" width="220" height="110" rx="12" fill="#E0F2E8" stroke="#22915A" stroke-width="3"/>
+<text x="760" y="426" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">ARRIVAL_PENDING</text>
+<text x="760" y="454" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">verified check-in;</text>
+<text x="760" y="474" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">no-show timer stopped</text>
+<rect x="650" y="610" width="220" height="110" rx="12" fill="#E0F2E8" stroke="#22915A" stroke-width="3"/>
+<text x="760" y="646" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">BAY_PREFLIGHT</text>
+<text x="760" y="674" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">assigned bay still</text>
+<text x="760" y="694" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">vacant + healthy?</text>
+<rect x="650" y="830" width="220" height="110" rx="12" fill="#E0F2E8" stroke="#22915A" stroke-width="3"/>
+<text x="760" y="866" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">REASSIGN_LOCK</text>
+<text x="760" y="894" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">atomic swap to a</text>
+<text x="760" y="914" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">protected backup bay</text>
+<rect x="1070" y="390" width="220" height="110" rx="12" fill="#FFF4DB" stroke="#D4930D" stroke-width="2.5"/>
+<text x="1180" y="426" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">MANUAL_REVIEW</text>
+<text x="1180" y="454" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">operator assists;</text>
+<text x="1180" y="474" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">never a no-show fee</text>
+<rect x="1070" y="610" width="220" height="110" rx="12" fill="#EAF1FD" stroke="#2F6FDE" stroke-width="2.5"/>
+<text x="1180" y="646" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">ENTRY_ADMIT</text>
+<text x="1180" y="674" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">entry gate FSM runs;</text>
+<text x="1180" y="694" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">open, wait for crossing</text>
+<rect x="1470" y="610" width="220" height="110" rx="12" fill="#EAF1FD" stroke="#2F6FDE" stroke-width="2.5"/>
+<text x="1580" y="646" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">ENTERED_NOT_PARKED</text>
+<text x="1580" y="674" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">inside, driving</text>
+<text x="1580" y="694" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">to assigned bay</text>
+<rect x="1470" y="390" width="220" height="110" rx="12" fill="#EAF1FD" stroke="#2F6FDE" stroke-width="2.5"/>
+<text x="1580" y="426" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">PARKED</text>
+<text x="1580" y="454" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">bay sensor occupied;</text>
+<text x="1580" y="474" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">no departure deadline</text>
+<rect x="1985" y="390" width="220" height="110" rx="12" fill="#EAF1FD" stroke="#2F6FDE" stroke-width="2.5"/>
+<text x="2095" y="426" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">EXIT_PENDING</text>
+<text x="2095" y="454" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">exit lane FSM runs</text>
+<text x="2095" y="474" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">(detail on 4.5 slide)</text>
+<rect x="1985" y="610" width="220" height="110" rx="12" fill="#EAF1FD" stroke="#2F6FDE" stroke-width="2.5"/>
+<text x="2095" y="646" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">EXITED_RECONCILE</text>
+<text x="2095" y="674" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">PARKING_DURATION queued;</text>
+<text x="2095" y="694" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">billing ACK not needed</text>
+<rect x="1979" y="824" width="232" height="122" rx="16" fill="#FFFFFF" stroke="#5A6578" stroke-width="2"/>
+<rect x="1985" y="830" width="220" height="110" rx="12" fill="#F1F3F6" stroke="#5A6578" stroke-width="2.5"/>
+<text x="2095" y="866" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1B2333" text-anchor="middle">CLOSED</text>
+<text x="2095" y="894" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">bay released;</text>
+<text x="2095" y="914" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="400" fill="#4A5568" text-anchor="middle">session archived</text>
+<rect x="1470" y="180" width="220" height="92" rx="10" fill="#FFFFFF" stroke="#9AA6B8" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="1580" y="208" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="700" fill="#1F2A44" text-anchor="middle">No departure deadline</text>
+<text x="1580" y="232" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">12 h+ stays remain valid;</text>
+<text x="1580" y="252" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">billed on actual duration</text>
+<rect x="1985" y="180" width="220" height="92" rx="10" fill="#FFFFFF" stroke="#9AA6B8" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="2095" y="208" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="700" fill="#1F2A44" text-anchor="middle">Lane detail</text>
+<text x="2095" y="232" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">EXIT_PENDING expands into</text>
+<text x="2095" y="252" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="400" fill="#4A5568" text-anchor="middle">the 4.5 exit FSM</text>
+<path d="M2095,274 V386" fill="none" stroke="#9AA6B8" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 4"/>
+<circle cx="170" cy="132" r="9" fill="#1F2A44"/>
+<path d="M170,141 V168" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<path d="M170,280 V388" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="182" y="328" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="start">local atomic commit</text>
+<text x="182" y="344" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="start">sets T0</text>
+<path d="M280,225 H388" fill="none" stroke="#C92A2A" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#aC92A2A)"/>
+<text x="335" y="198" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#C92A2A" text-anchor="middle">auth / commit</text>
+<text x="335" y="214" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#C92A2A" text-anchor="middle">fails</text>
+<path d="M170,500 V608" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="182" y="546" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="start">age ≥ 2700 s,</text>
+<text x="182" y="562" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="start">no verified arrival</text>
+<path d="M280,445 H648" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="465" y="420" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="middle">plate + presence</text>
+<text x="465" y="436" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="middle">captured before cutoff</text>
+<path d="M760,500 V608" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="772" y="560" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="start">check bay</text>
+<path d="M870,665 H1068" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="970" y="648" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="middle">bay vacant + healthy</text>
+<path d="M760,720 V828" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="748" y="770" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="end">bay occupied,</text>
+<text x="748" y="786" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="end">faulty or unknown</text>
+<path d="M870,860 H895 V673 A8,8 0 0,1 895,657 V445 H1068" fill="none" stroke="#C92A2A" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#aC92A2A)"/>
+<text x="907" y="790" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#C92A2A" text-anchor="start">no backup free</text>
+<path d="M870,910 H1180 V722" fill="none" stroke="#22915A" stroke-width="3" stroke-linejoin="round" marker-end="url(#a22915A)"/>
+<text x="1040" y="895" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#22915A" text-anchor="middle">backup committed</text>
+<path d="M1180,610 V502" fill="none" stroke="#C92A2A" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#aC92A2A)"/>
+<text x="1192" y="560" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#C92A2A" text-anchor="start">gate fault</text>
+<path d="M1290,665 H1468" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="1380" y="632" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="middle">entry crossing</text>
+<text x="1380" y="648" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="middle">INSIDE +1</text>
+<path d="M1580,610 V502" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="1592" y="550" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="start">assigned bay</text>
+<text x="1592" y="566" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="start">occupied</text>
+<path d="M1690,425 H1983" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="1837" y="400" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="middle">plate validated</text>
+<text x="1837" y="416" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="middle">at exit lane</text>
+<path d="M1985,475 H1692" fill="none" stroke="#E8590C" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#aE8590C)"/>
+<text x="1837" y="498" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#E8590C" text-anchor="middle">aborted passage</text>
+<text x="1837" y="514" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#E8590C" text-anchor="middle">(no movement counted)</text>
+<path d="M2095,500 V608" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="2107" y="540" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="start">exit crossing:</text>
+<text x="2107" y="556" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="start">exit time frozen,</text>
+<text x="2107" y="572" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="start">INSIDE −1</text>
+<path d="M2095,720 V828" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="2107" y="766" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="start">owner matches; bay</text>
+<text x="2107" y="782" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13" font-weight="500" fill="#4A5568" text-anchor="start">vacant + healthy</text>
+<path d="M2205,642 C2290,642 2290,692 2207,692" fill="none" stroke="#1F2A44" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="2292" y="630" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="500" fill="#4A5568" text-anchor="start">bay still</text>
+<text x="2292" y="646" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="500" fill="#4A5568" text-anchor="start">occupied:</text>
+<text x="2292" y="662" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="500" fill="#4A5568" text-anchor="start">flag, keep</text>
+<text x="2292" y="678" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="500" fill="#4A5568" text-anchor="start">unavailable</text>
+<rect x="40" y="1000" width="34" height="22" rx="6" fill="#EAF1FD" stroke="#2F6FDE" stroke-width="2.5"/>
+<text x="86" y="1016" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Normal state</text>
+<rect x="340" y="1000" width="34" height="22" rx="6" fill="#E0F2E8" stroke="#22915A" stroke-width="2.5"/>
+<text x="386" y="1016" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Innovation feature state</text>
+<rect x="640" y="1000" width="34" height="22" rx="6" fill="#FFF4DB" stroke="#D4930D" stroke-width="2.5"/>
+<text x="686" y="1016" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Assistance state</text>
+<rect x="937" y="997" width="40" height="28" rx="8" fill="#FFFFFF" stroke="#5A6578" stroke-width="2"/>
+<rect x="940" y="1000" width="34" height="22" rx="6" fill="#F1F3F6" stroke="#5A6578" stroke-width="2.5"/>
+<text x="986" y="1016" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">End state</text>
+<path d="M1160,1011 H1206" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linejoin="round" marker-end="url(#a1F2A44)"/>
+<text x="1218" y="1016" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Transition</text>
+<path d="M1460,1011 H1506" fill="none" stroke="#22915A" stroke-width="3" stroke-linejoin="round" marker-end="url(#a22915A)"/>
+<text x="1518" y="1016" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Backup recovery</text>
+<path d="M1760,1011 H1806" fill="none" stroke="#C92A2A" stroke-width="3" stroke-linejoin="round" marker-end="url(#aC92A2A)"/>
+<text x="1818" y="1016" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Failure path</text>
+<path d="M2060,1011 H2106" fill="none" stroke="#E8590C" stroke-width="3" stroke-linejoin="round" marker-end="url(#aE8590C)"/>
+<text x="2118" y="1016" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="400" fill="#1B2333" text-anchor="start">Aborted, return</text>
+<rect x="30" y="1050" width="2340" height="260" rx="10" fill="#FFFFFF" stroke="#C5CEDD" stroke-width="1.5"/>
+<text x="50" y="1082" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F2A44" text-anchor="start">How this FSM fits with the others</text>
+<text x="50" y="1118" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#2F6FDE" text-anchor="start">Per booking:</text>
+<text x="190" y="1118" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14" font-weight="400" fill="#4A5568" text-anchor="start">one instance runs for every booking, executed by the policy firmware on the RISC-V core.</text>
+<text x="50" y="1156" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#2F6FDE" text-anchor="start">Per lane:</text>
+<text x="190" y="1156" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14" font-weight="400" fill="#4A5568" text-anchor="start">ENTRY_ADMIT runs the entry gate FSM and EXIT_PENDING runs the exit gate FSM (4.5 slide). Gate RTL owns barrier motion and the obstruction interlock.</text>
+<text x="50" y="1194" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#2F6FDE" text-anchor="start">Timer:</text>
+<text x="190" y="1194" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14" font-weight="400" fill="#4A5568" text-anchor="start">the 15 / 45-minute countdown runs only in HELD. A verified arrival stops it, so a later gate fault or missing backup never causes a no-show fee.</text>
+<text x="50" y="1232" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#2F6FDE" text-anchor="start">Counters:</text>
+<text x="190" y="1232" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14" font-weight="400" fill="#4A5568" text-anchor="start">HELD_NOT_ARRIVED counts HELD. IN_TRANSIT counts ENTERED_NOT_PARKED plus parked cars that have left their bay. INSIDE_COUNT changes only on gate crossings.</text>
+<text x="50" y="1270" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#2F6FDE" text-anchor="start">Bay ownership:</text>
+<text x="190" y="1270" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="14" font-weight="400" fill="#4A5568" text-anchor="start">a booking owns exactly one bay from commit to CLOSED. REASSIGN_LOCK swaps it atomically, so no state ever has two owners for a bay or a booking with none.</text>
+</svg>

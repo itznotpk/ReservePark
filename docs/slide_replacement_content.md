@@ -14,7 +14,15 @@ Ready-to-insert image: `docs/diagrams/exit_fsm_4_5.png` (3840×2160) or `exit_fs
 
 ![Corrected exit FSM](diagrams/exit_fsm_4_5.png)
 
-The state table for the 4.5(b) slide lives in `docs/PRD.md` section 8.1, "Corrected exit FSM for challenge 4.5". Do not keep the old EXIT_COMMIT-after-close ordering or the FAULT-on-obstruction-during-close transition.
+The state table for the 4.5(b) slide lives in `docs/PRD.md` section 8.1, "Corrected exit FSM for challenge 4.5".
+
+### Overall system FSM (extra slide, before or after 4.5)
+
+The exit FSM covers only the exit lane. This whole-system FSM follows one booking from request to close and shows where the entry and exit lane FSMs run inside it. It carries the innovation story: the no-show timer, the backup swap and the no-deadline stay.
+
+![Overall booking FSM](diagrams/overall_fsm.png)
+
+Talk track: "Every booking runs this machine on the RISC-V core. The timer only runs in HELD, a verified arrival stops it, and the bay is swapped atomically before the barrier opens. EXIT_PENDING is the exit lane FSM on the next slide." Do not keep the old EXIT_COMMIT-after-close ordering or the FAULT-on-obstruction-during-close transition.
 
 Five differences from the preview slides to say out loud in the talk:
 

@@ -4,6 +4,7 @@
 | --- | --- | --- |
 | `block_diagram_4_1.png` / `.svg` | 4.1 Block diagram | SoC blocks, bus links, external I/O, direct sensor and interlock wires |
 | `exit_fsm_4_5.png` / `.svg` | 4.5 Exit FSM | Corrected exit FSM from PRD section 8.1, with new and renamed states marked |
+| `overall_fsm.png` / `.svg` | Extra slide or appendix | Whole-system booking FSM: request, timer, no-show, entry with backup recovery, parked, exit, billing and release |
 
 PNGs are 3840×2160 (16:9), sized for a full-width slide. SVGs stay sharp at any size and can be converted to editable shapes in PowerPoint (Insert > Pictures, then right-click > Convert to Shape).
 

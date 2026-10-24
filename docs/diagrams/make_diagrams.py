@@ -337,7 +337,143 @@ def exit_fsm():
     g.save("exit_fsm_4_5.svg", [BUS, SAFE, ERR])
 
 
+# ---------------------------------------------------------------- overall booking FSM
+GRN = "#22915A"
+AMB = "#D4930D"
+OS = {"n": ("#EAF1FD", "#2F6FDE"), "feat": ("#E0F2E8", GRN), "assist": ("#FFF4DB", AMB),
+      "end": ("#F1F3F6", "#5A6578")}
+
+
+def overall_fsm():
+    g = SVG(2400, 1350)
+    R = {1: 170, 2: 390, 3: 610, 4: 830}
+
+    def st(cx, row, name, l1, l2, kind="n"):
+        y = R[row]
+        f2, s2 = OS[kind]
+        if kind == "end":
+            g.rect(cx - 116, y - 6, 232, 122, "#FFFFFF", s2, sw=2, rx=16)
+        g.rect(cx - 110, y, 220, 110, f2, s2, sw=2.5 if kind != "feat" else 3, rx=12)
+        g.text(cx, y + 36, name, 16, 700)
+        g.text(cx, y + 64, l1, 13, 400, SUB)
+        g.text(cx, y + 84, l2, 13, 400, SUB)
+
+    def lab(x, y, lines, color=SUB, anchor="middle", size=13, weight=500):
+        for k, t in enumerate(lines):
+            g.text(x, y + 16 * k, t, size, weight, color, anchor)
+
+    # phase panels
+    panels = [(30, 590, "1 · Booking + no-show timer", "#2F6FDE"),
+              (640, 700, "2 · Entry lane + bay recovery", GRN),
+              (1360, 420, "3 · Parked", "#2F6FDE"),
+              (1800, 570, "4 · Exit + settlement", "#2F6FDE")]
+    for x, w, t, c in panels:
+        g.rect(x, 50, w, 920, "#F7F9FC", "#DCE3EE", sw=1.5, rx=14)
+        g.text(x + 20, 88, t, 18, 700, c, "start")
+
+    c0, cRej, cL, cR, c3, c4 = 170, 500, 760, 1180, 1580, 2095
+    st(c0, 1, "REQUEST", "plate token +", "payment authorisation")
+    st(cRej, 1, "REJECTED", "no T0, no countdown;", "lock rolled back", "end")
+    st(c0, 2, "HELD", "0–900 s on time;", "900–2700 s late, 1 reminder", "feat")
+    st(c0, 3, "NO_SHOW", "hold released;", "one NO_SHOW_FEE ID", "end")
+    st(cL, 2, "ARRIVAL_PENDING", "verified check-in;", "no-show timer stopped", "feat")
+    st(cL, 3, "BAY_PREFLIGHT", "assigned bay still", "vacant + healthy?", "feat")
+    st(cL, 4, "REASSIGN_LOCK", "atomic swap to a", "protected backup bay", "feat")
+    st(cR, 2, "MANUAL_REVIEW", "operator assists;", "never a no-show fee", "assist")
+    st(cR, 3, "ENTRY_ADMIT", "entry gate FSM runs;", "open, wait for crossing")
+    st(c3, 3, "ENTERED_NOT_PARKED", "inside, driving", "to assigned bay")
+    st(c3, 2, "PARKED", "bay sensor occupied;", "no departure deadline")
+    st(c4, 2, "EXIT_PENDING", "exit lane FSM runs", "(detail on 4.5 slide)")
+    st(c4, 3, "EXITED_RECONCILE", "PARKING_DURATION queued;", "billing ACK not needed")
+    st(c4, 4, "CLOSED", "bay released;", "session archived", "end")
+
+    # notes in empty top cells
+    g.rect(c3 - 110, 180, 220, 92, "#FFFFFF", "#9AA6B8", sw=1.5, rx=10, dash="6 4")
+    g.text(c3, 208, "No departure deadline", 13.5, 700, BUS)
+    g.text(c3, 232, "12 h+ stays remain valid;", 12.5, 400, SUB)
+    g.text(c3, 252, "billed on actual duration", 12.5, 400, SUB)
+    g.rect(c4 - 110, 180, 220, 92, "#FFFFFF", "#9AA6B8", sw=1.5, rx=10, dash="6 4")
+    g.text(c4, 208, "Lane detail", 13.5, 700, BUS)
+    g.text(c4, 232, "EXIT_PENDING expands into", 12.5, 400, SUB)
+    g.text(c4, 252, "the 4.5 exit FSM", 12.5, 400, SUB)
+    g.path(f"M{c4},274 V386", "#9AA6B8", 1.5, False, False, "6 4")
+
+    # start
+    g.dot(c0, 132, BUS, 9)
+    g.path(f"M{c0},141 V168", BUS)
+
+    # booking phase
+    g.path("M170,280 V388", BUS)
+    lab(182, 328, ["local atomic commit", "sets T0"], SUB, "start")
+    g.path("M280,225 H388", ERR, 2.5)
+    lab(335, 198, ["auth / commit", "fails"], ERR)
+    g.path("M170,500 V608", BUS)
+    lab(182, 546, ["age ≥ 2700 s,", "no verified arrival"], SUB, "start")
+    g.path("M280,445 H648", BUS)
+    lab(465, 420, ["plate + presence", "captured before cutoff"])
+
+    # entry phase
+    g.path("M760,500 V608", BUS)
+    lab(772, 560, ["check bay"], SUB, "start")
+    g.path("M870,665 H1068", BUS)
+    lab(970, 648, ["bay vacant + healthy"])
+    g.path("M760,720 V828", BUS)
+    lab(748, 770, ["bay occupied,", "faulty or unknown"], SUB, "end")
+    g.path("M870,860 H895 V673 A8,8 0 0,1 895,657 V445 H1068", ERR, 2.5)
+    lab(907, 790, ["no backup free"], ERR, "start")
+    g.path("M870,910 H1180 V722", GRN, 3)
+    lab(1040, 895, ["backup committed"], GRN, "middle", 13, 700)
+    g.path("M1180,610 V502", ERR, 2.5)
+    lab(1192, 560, ["gate fault"], ERR, "start")
+    g.path("M1290,665 H1468", BUS)
+    lab(1380, 632, ["entry crossing", "INSIDE +1"])
+
+    # parked and exit
+    g.path("M1580,610 V502", BUS)
+    lab(1592, 550, ["assigned bay", "occupied"], SUB, "start")
+    g.path("M1690,425 H1983", BUS)
+    lab(1837, 400, ["plate validated", "at exit lane"])
+    g.path("M1985,475 H1692", SAFE, 2.5)
+    lab(1837, 498, ["aborted passage", "(no movement counted)"], SAFE)
+    g.path("M2095,500 V608", BUS)
+    lab(2107, 540, ["exit crossing:", "exit time frozen,", "INSIDE −1"], SUB, "start")
+    g.path("M2095,720 V828", BUS)
+    lab(2107, 766, ["owner matches; bay", "vacant + healthy"], SUB, "start")
+    g.path("M2205,642 C2290,642 2290,692 2207,692", BUS, 2.5)
+    lab(2292, 630, ["bay still", "occupied:", "flag, keep", "unavailable"], SUB, "start", 12.5)
+
+    # legend
+    ly = 1000
+    lg = [("n", "Normal state"), ("feat", "Innovation feature state"), ("assist", "Assistance state")]
+    for k, (kind, t) in enumerate(lg):
+        x = 40 + k * 300
+        g.rect(x, ly, 34, 22, *OS[kind], sw=2.5, rx=6)
+        g.text(x + 46, ly + 16, t, 13.5, 400, TXT, "start")
+    g.rect(937, ly - 3, 40, 28, "#FFFFFF", OS["end"][1], sw=2, rx=8)
+    g.rect(940, ly, 34, 22, *OS["end"], sw=2.5, rx=6)
+    g.text(986, ly + 16, "End state", 13.5, 400, TXT, "start")
+    arrows = [(BUS, "Transition"), (GRN, "Backup recovery"), (ERR, "Failure path"), (SAFE, "Aborted, return")]
+    for k, (c, t) in enumerate(arrows):
+        x = 1160 + k * 300
+        g.path(f"M{x},{ly + 11} H{x + 46}", c, 3)
+        g.text(x + 58, ly + 16, t, 13.5, 400, TXT, "start")
+
+    # how it fits
+    g.rect(30, 1050, 2340, 260, "#FFFFFF", "#C5CEDD", sw=1.5, rx=10)
+    g.text(50, 1082, "How this FSM fits with the others", 15, 700, BUS, "start")
+    notes = [("Per booking:", "one instance runs for every booking, executed by the policy firmware on the RISC-V core."),
+             ("Per lane:", "ENTRY_ADMIT runs the entry gate FSM and EXIT_PENDING runs the exit gate FSM (4.5 slide). Gate RTL owns barrier motion and the obstruction interlock."),
+             ("Timer:", "the 15 / 45-minute countdown runs only in HELD. A verified arrival stops it, so a later gate fault or missing backup never causes a no-show fee."),
+             ("Counters:", "HELD_NOT_ARRIVED counts HELD. IN_TRANSIT counts ENTERED_NOT_PARKED plus parked cars that have left their bay. INSIDE_COUNT changes only on gate crossings."),
+             ("Bay ownership:", "a booking owns exactly one bay from commit to CLOSED. REASSIGN_LOCK swaps it atomically, so no state ever has two owners for a bay or a booking with none.")]
+    for k, (h, t) in enumerate(notes):
+        g.text(50, 1118 + 38 * k, h, 14, 700, "#2F6FDE", "start")
+        g.text(190, 1118 + 38 * k, t, 14, 400, SUB, "start")
+    g.save("overall_fsm.svg", [BUS, ERR, GRN, SAFE, "#9AA6B8"])
+
+
 if __name__ == "__main__":
     block_diagram()
     exit_fsm()
+    overall_fsm()
     print("wrote", os.path.abspath(OUT))
