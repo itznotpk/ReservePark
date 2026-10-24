@@ -1,0 +1,29 @@
+[*]
+[*] ReservePark GTKWave preset: Recovery: bay 0 taken by a stranger, swap to backup bay 3 before the grant
+[*]
+[dumpfile] "build/recovery.vcd"
+[timestart] 0
+@200
+-Time and control unit
+@28
+tb_top.clk
+tb_top.now_s[31:0]
+tb_top.cu_state[3:0]
+tb_top.dut.u_cu.ev_type[3:0]
+tb_top.arrow[8:0]
+@200
+-Bays
+@28
+tb_top.occ[3:0]
+tb_top.flt[3:0]
+tb_top.owner[3:0]
+tb_top.bk_free[2:0]
+tb_top.conflict[3:0]
+@200
+-Outcome
+@28
+tb_top.dut.grant_entry
+tb_top.disp_msg[2:0]
+tb_top.disp_bay[1:0]
+tb_top.out_valid
+tb_top.out_msg[45:0]

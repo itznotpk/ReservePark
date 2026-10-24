@@ -147,6 +147,49 @@ def run_all():
     return 0 if good else 1
 
 
+def vcd_signals(path):
+    """Full hierarchical signal names found in a VCD, with and without the bit range."""
+    names, scope = set(), []
+    with open(path) as f:
+        for line in f:
+            t = line.split()
+            if not t:
+                continue
+            if t[0] == "$scope":
+                scope.append(t[2])
+            elif t[0] == "$upscope":
+                scope.pop()
+            elif t[0] == "$var":
+                rng = "".join(t[5:-1])
+                names.add(".".join(scope + [t[4]]) + rng)
+                names.add(".".join(scope + [t[4]]))
+            elif t[0] == "$enddefinitions":
+                break
+    return names
+
+
+def check_waves():
+    """Every GTKWave preset must load against its scenario's VCD: all signals resolve."""
+    ok, text = compile_top()
+    if not ok:
+        print(text)
+        return 1
+    bad = 0
+    for preset in sorted(glob.glob(os.path.join(WAVE_DIR, "*.gtkw"))):
+        name = os.path.splitext(os.path.basename(preset))[0]
+        r = run_scenario(name)
+        if not r["ok"]:
+            print("FAIL  %s: scenario does not pass" % name)
+            bad += 1
+            continue
+        have = vcd_signals(os.path.join(BUILD, name + ".vcd"))
+        sigs = [l.strip() for l in open(preset) if l.strip() and l[0] not in "[@-"]
+        missing = [s for s in sigs if s not in have]
+        print("%s  %s: %d signals, %d missing %s" % ("FAIL" if missing else "PASS", name, len(sigs), len(missing), missing))
+        bad += 1 if missing else 0
+    return 1 if bad else 0
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--unit", help="unit bench name (tb/unit/tb_<name>.v) or 'all'")
@@ -154,10 +197,13 @@ def main():
     ap.add_argument("--scn", help="run one scenario by name")
     ap.add_argument("--all", action="store_true", help="run every scenario and report arrow coverage")
     ap.add_argument("--wave", action="store_true", help="open GTKWave after --scn")
+    ap.add_argument("--check-waves", action="store_true", help="run each scenario that has a preset and check every preset signal exists in its VCD")
     args = ap.parse_args()
 
     if args.all:
         sys.exit(run_all())
+    if args.check_waves:
+        sys.exit(check_waves())
     if args.scn:
         ok, text = compile_top()
         if not ok:

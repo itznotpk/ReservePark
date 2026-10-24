@@ -8,7 +8,7 @@ Phase 1: DONE
 Phase 2: DONE
 Phase 3: DONE
 Phase 4: DONE
-Phase 5: TODO
+Phase 5: DONE
 
 ## Design questions
 
@@ -29,6 +29,7 @@ Phase 5: TODO
 - BOOK_REQ t0 (and the BOOKED value) = capture timestamp of the event, not now_s at processing (processing takes ~14 cycles and can cross a second boundary, which made boundary tests unreliable). Equivalent when processed within the same second.
 - Boundary at exactly t0+2700: deadline scan and a camera event captured at that second race when the queue is idle (scan can win). Only a camera served from a busy queue is judged purely by capture ts; boundary.scn and race.scn keep the queue busy for those cases.
 - Scenario syntax extras beyond the design list: WAITUNTIL s (absolute chip second), WAITC n (cycles), PARTIAL entry|exit, RESET, STUCK entry|exit. EXPECT keys: msgs, msg<i>, n_<TYPE> (raw sends incl. retries), bay_of_<TYPE>, grant_entry/exit, display, display_bay, owner (decimal mask), inside, fees (distinct fee ids), fee_sends, bookable, backup_free, bad_seq_entry/exit, entry_gate/exit_gate (open|closed), entry_reopens, dur_min, dur_max.
+- Phase 5 has no explicit "Done when" command. Chose: presets for recovery, obstruct and noshow exist in emu/waves/ and `python emu/run.py --check-waves` PASSes (each preset signal resolves in its scenario VCD), plus the final --all table below. NOT done (manual, outside rtl/ tb/ emu/): opening GTKWave to check the layout visually, screenshots, and pasting the PASS table into the slides.
 
 ## Log
 
@@ -71,3 +72,47 @@ arrows exercised: 9/9
 RESULT: PASS
 ```
   Also: `python emu/run.py --unit all` -> 12/12 PASS; `python emu/run.py --top` -> PASS.
+- 2026-10-24 Phase 5: wrote emu/waves/{recovery,obstruct,noshow}.gtkw and `--check-waves` in emu/run.py.
+  `python emu/run.py --check-waves` -> PASS noshow (11 signals, 0 missing), PASS obstruct (15, 0), PASS recovery (15, 0).
+
+## Final run (all phases done)
+
+`python emu/run.py --all` (rc=0):
+```
+scenario       result  fails  arrows(hex)  secs
+---------------------------------------------------
+assist         PASS        0          00b   0.4
+boundary       PASS        0          007  30.1
+dup_ack        PASS        0          005   7.6
+entry_timeout  PASS        0          09b   8.8
+exit_occupied  PASS        0          02b   0.7
+full           PASS        0          001   0.1
+late           PASS        0          02b   5.1
+no_backup      PASS        0          113   9.1
+normal         PASS        0          02b  12.0
+noshow         PASS        0          005   7.6
+obstruct       PASS        0          00b   0.4
+race           PASS        0          003   7.5
+recovery       PASS        0          00b   0.6
+reverse        PASS        0          00b   0.4
+stall          PASS        0          14b   4.6
+wrong_plate    PASS        0          005   7.6
+---------------------------------------------------
+16/16 scenarios passed
+
+FSM arrow coverage (design 5.4):
+  [x] commit -> HELD               assist, boundary, dup_ack, entry_timeout, exit_occupied, full, late, no_backup, normal, noshow, obstruct, race, recovery, reverse, stall, wrong_plate
+  [x] HELD -> ARRIVED              assist, boundary, entry_timeout, exit_occupied, late, no_backup, normal, obstruct, race, recovery, reverse, stall
+  [x] HELD -> CLOSED (no-show)     boundary, dup_ack, noshow, wrong_plate
+  [x] ARRIVED -> INSIDE            assist, entry_timeout, exit_occupied, late, normal, obstruct, recovery, reverse, stall
+  [x] ARRIVED -> REVIEW            entry_timeout, no_backup
+  [x] INSIDE -> CLOSED             exit_occupied, late, normal
+  [x] INSIDE -> REVIEW             stall
+  [x] REVIEW -> ARRIVED (retry)    entry_timeout
+  [x] REVIEW -> CLOSED (resolve)   no_backup, stall
+arrows exercised: 9/9
+RESULT: PASS
+```
+`python emu/run.py --unit all`: 12/12 PASS (barrier_ctrl, bay_alloc, control_unit, display, event_queue, input_filter, memory, out_queue, registers, reservepark_top, smoke, timer).
+
+ALL PHASES DONE
