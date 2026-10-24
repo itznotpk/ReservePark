@@ -5,7 +5,7 @@ Branch: rtl-sim
 
 Phase 0: DONE
 Phase 1: DONE
-Phase 2: TODO
+Phase 2: DONE
 Phase 3: TODO
 Phase 4: TODO
 Phase 5: TODO
@@ -19,6 +19,10 @@ Phase 5: TODO
 - Bay Allocator keeps no slot id per bay; Control Unit tracks bay in the record. SWAP success sets new bay phase=ARRIVE and frees old bay; failed SWAP leaves ownership unchanged.
 - Event Queue sources: 0 passages-entry (PASS_ENTRY/NOPASS_ENTRY), 1 passage-exit, 2 camera (entry/exit), 3 book, 4 assist; each carries its own type.
 - Barrier: reverse crossing (B first) -> VIOLATION, bad_seq, no passage; backing out from A_ONLY/BOTH is not a violation.
+- Control Unit: bay-usable test for CAM_ENTRY/RETRY = own bay not occupied and not faulty. Fee messages carry value=now_s (NOSHOW_FEE) or 0 (REFUND); BOOKED value = t0; LATE value = now_s.
+- RETRY whose swap fails leaves the record in REVIEW with a fresh ASSIST_NEEDED message and no arrow.
+- Operator commands are served after queued events and before the deadline scan; a command arriving while another is pending overwrites it.
+- Top exposes observation ports (arrow_fire, cu_state, bay_owner, inside_count, ...) for the phase 3 monitor; INSIDE_COUNT = entry passages - exit passages.
 
 ## Log
 
@@ -29,3 +33,6 @@ Phase 5: TODO
   Bugs found by benches and fixed: event_queue shift amount overflow (sel*3 in 3 bits) and always @* not evaluating at t=0 (now assigns).
   `python emu/run.py --unit all` ->
   PASS unit/barrier_ctrl, bay_alloc, display, event_queue, input_filter, memory, out_queue, registers, smoke, timer (rc=0). Committed on rtl-sim.
+- 2026-10-24 Phase 2: wrote rtl/control_unit.v, rtl/reservepark_top.v (full wiring), tb/unit/tb_control_unit.v (directed slices A-J, all 9 arrows), tb/unit/tb_reservepark_top.v (hard-coded normal lifecycle through pins).
+  Mutation check: changing arrival test `<` to `<=` made tb_control_unit FAIL (restored).
+  `python emu/run.py --unit all` -> PASS for barrier_ctrl, bay_alloc, control_unit, display, event_queue, input_filter, memory, out_queue, registers, reservepark_top, smoke, timer (rc=0).

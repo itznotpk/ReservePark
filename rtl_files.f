@@ -8,4 +8,5 @@ rtl/out_queue.v
 rtl/barrier_ctrl.v
 rtl/bay_alloc.v
 rtl/display.v
+rtl/control_unit.v
 rtl/reservepark_top.v
