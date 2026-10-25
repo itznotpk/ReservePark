@@ -35,6 +35,7 @@ This repository contains our **target design**, presented in the slides for chal
 ├── design/                       the target design (what the slides present)
 │   ├── README.md                 index of design documents
 │   ├── PRD.md                    requirements, architecture, FSMs, test catalogue
+│   ├── register_map.md           R0–R17 field by field, address regions (4.4.2)
 │   ├── diagrams/                 4.1 block diagram, booking / entry / exit FSMs (PNG + SVG + generator)
 │   ├── slide_content.md          slide text for 4.1–4.7 (team working notes)
 │   ├── requirements_and_simulation_review.md   requirements cross-check (working notes)
@@ -90,7 +91,7 @@ Three aligned FSMs:
 | --- | --- | --- |
 | ![Booking FSM](design/diagrams/overall_fsm.png) | ![Entry FSM](design/diagrams/entry_fsm.png) | ![Exit FSM](design/diagrams/exit_fsm_4_5.png) |
 
-Registers R0 to R17, interfaces, storage, the full test catalogue and DFx are specified in [design/PRD.md](design/PRD.md).
+Registers R0 to R17 are listed field by field in [design/register_map.md](design/register_map.md). Interfaces, storage, the full test catalogue and DFx are specified in [design/PRD.md](design/PRD.md).
 
 ---
 
