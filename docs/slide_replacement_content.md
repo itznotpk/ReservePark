@@ -434,6 +434,78 @@ A12/B03-style names above are the at-scale illustration only.
 
 ---
 
+## Simulation results: simplified first-stage model vs the ideal design
+
+The slides above show the ideal design. The simulation on branch `rtl-sim` (Zhu Heng) is a deliberately simplified first-stage model built for early testing, following the FSM review artifact. Show its results as evidence for the policy rules, and label the scope on the slide.
+
+Disclosure line for the results slide:
+
+```
+Simulation scope: first-stage functional model of the controller. Hardwired control
+unit with a five-state booking record, one beam sequencer and one motor FSM per lane,
+Icarus Verilog benches and 16 directed scenarios. Not yet modelled: RISC-V CPU,
+NVM persistence, random tests. Slides 4.1 to 4.5 show the target architecture.
+```
+
+### Ideal booking states vs simulated states
+
+| Ideal state (overall FSM slide) | Simulated state |
+| --- | --- |
+| REQUEST, REJECTED | Handled as a booking event. A full car park sends a reject message. Neither is a stored state. |
+| HELD | HELD |
+| NO_SHOW | CLOSED, with the no-show fee message sent |
+| ARRIVAL_PENDING | ARRIVED |
+| ENTERED_NOT_PARKED, PARKED, EXIT_PENDING | INSIDE. Parked or moving is read from the bay sensor and a parked flag. |
+| EXITED_RECONCILE | Not a state. The bay allocator keeps the bay owned until the sensor reads vacant. |
+| CLOSED | CLOSED |
+| MANUAL_REVIEW | REVIEW, left by operator resolve or retry |
+
+### Ideal lane states vs simulated blocks
+
+| Ideal lane states | Simulated block |
+| --- | --- |
+| WAIT_ACPR, VALIDATE, PREFLIGHT, REASSIGN | One control unit pass: camera event, bay usable check, atomic swap to backup |
+| OPEN, CLOSE, WAIT_CLEAR | Motor FSM: idle, opening, open wait, closing, fault. Obstruction reopens the barrier. |
+| WAIT_PASS, RECORD | Beam sequencer: clear, A only, both, B only, violation. A forward crossing sends a passage event with its capture timestamp. |
+| ASSIST, FAULT | Assist button event leading to REVIEW; motor FAULT state |
+| DONE, FINALIZE | Display message with the assigned bay; bay released once the sensor reads vacant |
+
+### 4.6 status column from the 16 scenarios
+
+Source: `docs/superpowers/progress.md` on `rtl-sim`. These are the author's reported results. Re-run `python emu/run.py --all` and copy the real run output before any row says PASS on a slide.
+
+| Slide ID | Scenario | Status to show |
+| --- | --- | --- |
+| D00 reset and boot | none, there is no CPU | NOT RUN |
+| D01 book, T0 stored | normal | Reported PASS |
+| D02 simultaneous bookings | none | NOT RUN |
+| D03 arrivals at +12 and +30 minutes | normal, late | Reported PASS |
+| D04 no arrival at +45 minutes | noshow | Reported PASS |
+| D05 assigned bay occupied, backup free | recovery | Reported PASS |
+| D06 assigned bay blocked, no backup | no_backup | Reported PASS |
+| D07 normal exit | normal | Reported PASS |
+| D08 obstruction while closing | obstruct | Reported PASS |
+| D09 12-hour stay on backup bay | none | NOT RUN |
+| D10 reset during backup swap | none, no persistence | NOT RUN |
+| R1, R2, R3 random tests | none, no random stimulus in the branch | NOT RUN |
+
+Covered by the simulation but missing from the slide list. Add the ones you want to show:
+
+| Scenario | What it shows |
+| --- | --- |
+| boundary | Arrivals at 899, 900 and 901 seconds and 2699, 2700 and 2701 seconds |
+| wrong_plate | Unknown plate or expired booking gets no gate grant |
+| reverse | Reverse and partial crossings are not counted |
+| dup_ack | Dropped then duplicated fee acknowledgement gives one logical fee |
+| exit_occupied | Bay stays unavailable after exit until the sensor clears |
+| full | Normal bays full with backup free rejects the booking |
+| entry_timeout | Verified at 44 minutes with no passage goes to review, never a no-show fee |
+| stall, assist, race | Stall timeout, assist button, and arrival racing the deadline |
+
+Reported coverage: 16 of 16 scenarios, all 9 booking transitions, 12 of 12 unit benches.
+
+---
+
 ## Alignment checklist
 
 Before submitting, check that these names are identical on every slide:
