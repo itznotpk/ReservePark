@@ -436,7 +436,26 @@ A12/B03-style names above are the at-scale illustration only.
 
 ## Simulation results: simplified first-stage model vs the ideal design
 
-The slides above show the ideal design. The simulation on branch `rtl-sim` (Zhu Heng) is a deliberately simplified first-stage model built for early testing, following the FSM review artifact. Show its results as evidence for the policy rules, and label the scope on the slide.
+The slides above show the ideal design. The simulation by Zhu Heng, now merged into main, is a deliberately simplified first-stage model built for early testing, following the FSM review artifact. Show its results as evidence for the policy rules, and label the scope on the slide.
+
+| Item | Location |
+| --- | --- |
+| Chip RTL, 12 files | `rtl/`, listed in `rtl_files.f` |
+| Unit and system benches | `tb/unit/`, `tb/tb_top.v`, `tb/models.v` |
+| 16 scenarios | `emu/scenarios/*.scn` |
+| Runner | `emu/run.py` |
+| GTKWave presets for slide waveforms | `emu/waves/recovery.gtkw`, `obstruct.gtkw`, `noshow.gtkw` |
+| Author's progress log and results | `docs/superpowers/progress.md` |
+
+Commands, once Icarus Verilog is installed. Outputs go to `build/`, which git ignores:
+
+```
+python emu/run.py --unit all        12 unit benches
+python emu/run.py --all             16 scenarios, PASS table and transition coverage
+python emu/run.py --scn recovery --wave    open the recovery waveform in GTKWave
+```
+
+The three presets match the waveform evidence planned in PRD section 13: recovery is E04, obstruct is E05 and noshow is E06.
 
 Disclosure line for the results slide:
 
@@ -472,7 +491,7 @@ NVM persistence, random tests. Slides 4.1 to 4.5 show the target architecture.
 
 ### 4.6 status column from the 16 scenarios
 
-Source: `docs/superpowers/progress.md` on `rtl-sim`. These are the author's reported results. Re-run `python emu/run.py --all` and copy the real run output before any row says PASS on a slide.
+Source: `docs/superpowers/progress.md`. These are the author's reported results. Re-run `python emu/run.py --all` and copy the real run output before any row says PASS on a slide.
 
 | Slide ID | Scenario | Status to show |
 | --- | --- | --- |

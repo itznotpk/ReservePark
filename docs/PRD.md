@@ -47,6 +47,7 @@ The goal is clear engineering evidence, not maximum feature count. A small corre
 | `../RESERVEPARK_RISCV_Coding_Agent_Brief.md` | Existing implementation baseline, D00-D29 scenarios and technical clarifications |
 | `requirements_and_simulation_review.md` | Cross-check, environment observations and identified slide corrections |
 | This PRD | Proposed delivery priorities, testbench structure and evidence/showcase contract |
+| `rtl/`, `tb/`, `emu/`, `docs/superpowers/progress.md` | Simplified first-stage RTL model (Zhu Heng): hardwired control unit, five-state booking record, beam sequencer and motor FSM per lane, 16 directed scenarios. Not the target architecture; mapped to it in `docs/slide_replacement_content.md` |
 
 The four-bay system, PicoRV32/RV32I, Icarus and GTKWave come from the existing brief. Testbench task names, output layout, queue sizes and showcase ordering below are proposed engineering defaults, not prior user decisions. A builder may tune resource sizes and timeouts after measurement, recording the change in the run manifest. Policy semantics and pass criteria must not be weakened to obtain a pass.
 
@@ -656,5 +657,7 @@ Before presenting:
 - [ ] PowerPoint filename, deadline, speaker allocation and offline demo fallback checked.
 
 Present status at v1.1: slide corrections, corrected exit FSM and deadline priorities added; PowerPoint and all simulation work still pending.
+
+Present status after merge on 25 October: a simplified first-stage RTL model is in the repository. Its author reports 12/12 unit benches and 16/16 directed scenarios passing; these have not been re-run in this environment, which lacks Icarus Verilog. Not yet built: RISC-V CPU and firmware, NVM persistence, random tests. Tier A as defined in section 4 still requires the CPU.
 
 Present status at PRD creation: source requirements reviewed; design and verification/evidence plan written; implementation, test execution, graphs derived from results and waveform captures pending. No real result values have been fabricated in this document.
