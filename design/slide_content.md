@@ -376,24 +376,29 @@ Kicker: `RESERVEPARK SoC | INTEL UNIVERSITY VLSI BOOTCAMP 2026 4.7 DFX`
 
 ```
 Issue A — bay sensor stuck HIGH/LOW
-• Symptom: normal or backup bay falsely appears free, so ENTRY_PREFLIGHT
-  could pass a blocked bay.
+• Symptom (stuck LOW): bay falsely appears free, so ENTRY_PREFLIGHT could
+  pass a blocked bay.
+• Symptom (stuck HIGH): bay always looks occupied, is never bookable, and a
+  booked driver is swapped to backup for no reason.
 • Debug hook: raw vs qualified view in the Input qualifier, sticky
   SENSOR_ERR (R9), read out through the JTAG / debug port.
+• DFx: maintenance-mode test pattern injection (R11) and GPIO path test.
+• Shown in our simulation: raw and filtered sensor signals side by side,
+  sticky BAY_CONFLICT in R9.
 
 Issue B — occupancy count stuck/corrupt
 • Symptom: duplicate assignment or backup count mismatch in Bay counters.
 • Debug hook: Bay allocator owner table, bay IDs (R17), lock status (R16)
   and the Debug trace buffer, read out through JTAG.
+• DFx: scan observation, allocator self-test, memory BIST.
+• Shown in our simulation: owner table and counts exposed as observation
+  ports, sticky bad-sequence flag per barrier for out-of-order beams.
 
-Demonstrated in this simulation:
-• Trace buffer (bounded event log) and sticky fault bits with W1C clear.
-• Raw-vs-qualified sensor view for bay and obstruction signals.
-• Maintenance-mode (R11) stimulus injection, isolated from live interlocks.
-
-Proposed for silicon, not built in this POC:
+Proposed for silicon, not in the simplified simulation:
 • Scan chains and compressed test patterns through the JTAG port.
-• Full memory BIST beyond a small scratch-RAM pattern test.
+• Memory BIST, allocator self-test and the debug trace buffer.
+• Maintenance-mode test injection through R11 (the register exists in the
+  simulation but nothing uses it yet).
 
 Ways to reduce hardware test time
 • Run memory self-test and peripheral unit tests in parallel where isolated.
