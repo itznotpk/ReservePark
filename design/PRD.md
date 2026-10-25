@@ -42,12 +42,12 @@ The goal is clear engineering evidence, not maximum feature count. A small corre
 
 | Source | Authority |
 | --- | --- |
-| `../Smart CarPark Challenge.pdf` | Official deliverables, rubric and presentation requirements |
-| `../ReservePark_Flexible_Parking_Duration_Preview.pdf` | Current parking policy and logical R0-R17 definitions |
-| `../RESERVEPARK_RISCV_Coding_Agent_Brief.md` | Existing implementation baseline, D00-D29 scenarios and technical clarifications |
+| `../challenge/Smart CarPark Challenge.pdf` | Official deliverables, rubric and presentation requirements |
+| `../challenge/ReservePark_Flexible_Parking_Duration_Preview.pdf` | Current parking policy and logical R0-R17 definitions |
+| `RESERVEPARK_RISCV_Coding_Agent_Brief.md` | Existing implementation baseline, D00-D29 scenarios and technical clarifications |
 | `requirements_and_simulation_review.md` | Cross-check, environment observations and identified slide corrections |
 | This PRD | Proposed delivery priorities, testbench structure and evidence/showcase contract |
-| `rtl/`, `tb/`, `emu/`, `docs/superpowers/progress.md` | Simplified first-stage RTL model (Zhu Heng): hardwired control unit, five-state booking record, beam sequencer and motor FSM per lane, 16 directed scenarios. Not the target architecture; mapped to it in `docs/slide_replacement_content.md` |
+| `../simulation/` (`rtl/`, `tb/`, `emu/`, `BUILD_LOG.md`) | Simplified first-stage RTL model (Zhu Heng): hardwired control unit, five-state booking record, beam sequencer and motor FSM per lane, 16 directed scenarios. Not the target architecture; mapped to it in `slide_content.md` |
 
 The four-bay system, PicoRV32/RV32I, Icarus and GTKWave come from the existing brief. Testbench task names, output layout, queue sizes and showcase ordering below are proposed engineering defaults, not prior user decisions. A builder may tune resource sizes and timeouts after measurement, recording the change in the run manifest. Policy semantics and pass criteria must not be weakened to obtain a pass.
 
@@ -208,7 +208,7 @@ Do not require PHYS_OCC == INSIDE_COUNT during transit or under deliberately inj
 
 ## 8. State-machine design and explanation
 
-Three state machines, aligned by name. The overall booking FSM below runs once per booking in firmware. The entry lane FSM (section 8.2) and exit lane FSM (section 8.1) run once per vehicle at each gate. Only five lane states move a booking: ENTRY_VALIDATE, ENTRY_RECORD, EXIT_VALIDATE, EXIT_RECORD and EXIT_FINALIZE. Slide images: `docs/diagrams/overall_fsm.png`, `entry_fsm.png`, `exit_fsm_4_5.png`.
+Three state machines, aligned by name. The overall booking FSM below runs once per booking in firmware. The entry lane FSM (section 8.2) and exit lane FSM (section 8.1) run once per vehicle at each gate. Only five lane states move a booking: ENTRY_VALIDATE, ENTRY_RECORD, EXIT_VALIDATE, EXIT_RECORD and EXIT_FINALIZE. Slide images: `diagrams/overall_fsm.png`, `entry_fsm.png`, `exit_fsm_4_5.png`.
 
 ```mermaid
 stateDiagram-v2

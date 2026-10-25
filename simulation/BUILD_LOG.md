@@ -1,5 +1,7 @@
 # ReservePark RTL simulation: progress
 
+> Repository note: this log was written by the simulation author during the build. Paths are relative to this `simulation/` folder. The design spec named on the next line was not committed to the repository; the design it follows is summarised in `README.md` in this folder.
+
 Design: docs/superpowers/specs/2026-10-24-reservepark-rtl-sim-design.md
 Branch: rtl-sim
 
