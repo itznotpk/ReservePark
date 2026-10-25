@@ -1,0 +1,10 @@
+# Normal bays full, backup free: booking rejected  [D23]
+WAITUNTIL 10
+BOOK A1
+BOOK B2
+BOOK C3
+WAIT 6
+EXPECT n_BOOKED=3 owner=7 backup_free=1 bookable=0
+BOOK D4
+WAIT 2
+EXPECT n_REJECT_FULL=1 owner=7 backup_free=1 msgs=4 msg3=REJECT_FULL

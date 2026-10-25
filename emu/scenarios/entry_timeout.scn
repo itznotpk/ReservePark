@@ -1,0 +1,17 @@
+# Verified at 44 min, barrier opens, nobody passes: REVIEW, never a no-show fee; operator RETRY then entry  [D09]
+WAITUNTIL 10
+BOOK A1
+WAITUNTIL 2650
+CAMERA entry A1
+WAITC 80
+EXPECT grant_entry=1 display=GO_BAY
+WAIT 140
+EXPECT n_ASSIST_NEEDED=1 display=SEE_STAFF n_NOSHOW_FEE=0 owner=1
+WAITUNTIL 3100
+EXPECT n_NOSHOW_FEE=0 owner=1
+OPERATOR 0 RETRY
+WAITC 80
+EXPECT grant_entry=2 display=GO_BAY n_ASSIST_NEEDED=1
+PASS entry
+WAIT 2
+EXPECT inside=1 n_ASSIST_NEEDED=1 n_NOSHOW_FEE=0

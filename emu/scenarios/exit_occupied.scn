@@ -1,0 +1,24 @@
+# Bay still occupied after the car left the gate: unavailable until the sensor clears  [D14]
+WAITUNTIL 10
+BOOK A1
+WAIT 1
+WAITUNTIL 200
+CAMERA entry A1
+WAITC 80
+PASS entry
+BAY 0 OCC
+WAIT 5
+CAMERA exit A1
+WAITC 80
+PASS exit
+WAIT 2
+EXPECT n_DURATION=1 owner=1 bookable=2
+BOOK B2
+WAIT 2
+EXPECT n_BOOKED=2 bay_of_BOOKED=1 owner=3
+BAY 0 VAC
+WAIT 2
+EXPECT owner=2 bookable=2
+BOOK C3
+WAIT 2
+EXPECT n_BOOKED=3 bay_of_BOOKED=0 owner=3

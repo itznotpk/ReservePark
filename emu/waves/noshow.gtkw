@@ -1,0 +1,25 @@
+[*]
+[*] ReservePark GTKWave preset: No-show: fee at t0+2700 s, hold released
+[*]
+[dumpfile] "build/noshow.vcd"
+[timestart] 0
+@200
+-Time and control unit
+@28
+tb_top.clk
+tb_top.now_s[31:0]
+tb_top.cu_state[3:0]
+tb_top.dut.u_cu.ev_type[3:0]
+tb_top.arrow[8:0]
+@200
+-Bays
+@28
+tb_top.owner[3:0]
+tb_top.dut.u_ba.release_wait_o[3:0]
+@200
+-Backend
+@28
+tb_top.out_valid
+tb_top.out_msg[45:0]
+tb_top.pay_ack
+tb_top.pay_ack_id[11:0]

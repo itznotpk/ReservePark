@@ -1,0 +1,14 @@
+# No arrival: NOSHOW_FEE at 2700 s, hold released, INSIDE unchanged  [D03]
+WAITUNTIL 10
+BOOK A1
+WAITUNTIL 2705
+EXPECT n_NOSHOW_FEE=0 owner=1
+WAITUNTIL 2714
+EXPECT n_NOSHOW_FEE=1 owner=0 inside=0 n_LATE=1 grant_entry=0
+ACK
+WAIT 30
+EXPECT fees=1 fee_sends=1
+# the released bay can be booked again
+BOOK B2
+WAIT 2
+EXPECT n_BOOKED=2 bay_of_BOOKED=0 owner=1

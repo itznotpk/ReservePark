@@ -1,0 +1,16 @@
+# Car stands in the beam while the gate closes: reopen, never close on it  [D08]
+WAITUNTIL 10
+BOOK A1
+WAIT 1
+WAITUNTIL 100
+CAMERA entry A1
+WAITC 80
+PASS entry
+OBSTRUCT entry on
+WAITC 80
+EXPECT entry_reopens=1 entry_gate=open inside=1
+WAIT 5
+EXPECT entry_gate=open entry_fault=0
+OBSTRUCT entry off
+WAIT 3
+EXPECT entry_gate=closed entry_reopens=1 entry_fault=0

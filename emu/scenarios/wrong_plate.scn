@@ -1,0 +1,19 @@
+# Unknown plate and expired booking: no grant  [D04]
+WAITUNTIL 10
+BOOK A1
+WAIT 1
+CAMERA entry B2
+WAITC 80
+EXPECT grant_entry=0 display=NO_BOOKING owner=1
+CAMERA exit B2
+WAITC 80
+EXPECT grant_exit=0 display=SEE_STAFF
+# a booking nobody drove in with cannot leave either
+CAMERA exit A1
+WAITC 80
+EXPECT grant_exit=0 display=SEE_STAFF
+WAITUNTIL 2750
+EXPECT fees=1 owner=0
+CAMERA entry A1
+WAITC 80
+EXPECT grant_entry=0 display=NO_BOOKING fees=1

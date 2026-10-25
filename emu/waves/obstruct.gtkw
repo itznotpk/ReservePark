@@ -1,0 +1,29 @@
+[*]
+[*] ReservePark GTKWave preset: Obstruction: car in the beam while the entry gate closes
+[*]
+[dumpfile] "build/obstruct.vcd"
+[timestart] 0
+@200
+-Time
+@28
+tb_top.clk
+tb_top.now_s[31:0]
+@200
+-Car and beams
+@28
+tb_top.ea
+tb_top.eb
+tb_top.obs_e
+tb_top.dut.u_ent.obstruct
+tb_top.dut.u_ent.beam_state[2:0]
+tb_top.dut.u_ent.passage
+@200
+-Gate
+@28
+tb_top.dut.u_ent.motor_state[2:0]
+tb_top.e_mo
+tb_top.e_mc
+tb_top.e_pos[3:0]
+tb_top.e_lo
+tb_top.e_lc
+tb_top.ef

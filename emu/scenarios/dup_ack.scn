@@ -1,0 +1,13 @@
+# Dropped, then duplicated fee ack: one logical fee  [D11, D25]
+WAITUNTIL 10
+BOOK A1
+WAITUNTIL 2714
+EXPECT n_NOSHOW_FEE=1 fee_sends=1 fees=1
+DROPACK 1
+ACK
+WAIT 15
+EXPECT fee_sends=2 fees=1
+ACK
+ACK
+WAIT 30
+EXPECT fee_sends=2 fees=1 n_NOSHOW_FEE=2

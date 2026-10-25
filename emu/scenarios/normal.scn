@@ -1,0 +1,24 @@
+# Book, arrive at 12 min, park, exit; duration message  [D01, D07]
+WAITUNTIL 10
+BOOK A1
+WAIT 2
+EXPECT msgs=1 msg0=BOOKED n_BOOKED=1 bay_of_BOOKED=0 owner=1
+WAITUNTIL 730
+CAMERA entry A1
+WAITC 80
+EXPECT grant_entry=1 display=GO_BAY display_bay=0
+PASS entry
+WAIT 1
+EXPECT inside=1 n_LATE=0
+BAY 0 OCC
+WAIT 3600
+CAMERA exit A1
+WAITC 80
+EXPECT grant_exit=1
+BAY 0 VAC
+PASS exit
+WAIT 2
+EXPECT n_DURATION=1 dur_min=3600 dur_max=3630 inside=0 owner=0
+ACK
+WAIT 30
+EXPECT fees=1 fee_sends=1 n_NOSHOW_FEE=0

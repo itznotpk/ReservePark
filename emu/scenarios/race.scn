@@ -1,0 +1,13 @@
+# Arrival captured at 10+2699 while the queue is busy; served after the deadline: no fee
+WAITUNTIL 10
+BOOK A1
+WAITUNTIL 2708
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+BOOK A1
+CAMERA entry A1
+WAIT 12
+EXPECT grant_entry=1 n_NOSHOW_FEE=0 display=GO_BAY owner=1 n_BOOKED=7
